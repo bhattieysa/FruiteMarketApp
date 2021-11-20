@@ -1,23 +1,23 @@
 import React, { useState, useRef, useEffect } from "react"
 import slides from "../backend/slides"
-import { FlatList, View, StyleSheet, Text, Animated } from "react-native"
+import { FlatList, View, StyleSheet, Text, Animated ,SafeAreaView} from "react-native"
 import { Navigation } from 'react-native-navigation';
 import OnBoardingItem from "./OnBoardingItems"
 import Paginator from "../components/Paginator"
 import NextButton from "./NextButton"
-// import SplashScreen from 'react-native-splash-screen'
+
+import SplashScreen from 'react-native-splash-screen'
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import Home from "../screens/HomeScreen"
 
-import { SafeAreaView } from "react-native-safe-area-context"
 
 
 const OnBoarding = (props) => {
-
+  
   const [viewedOnboarding, setViewedOnBoarding] = useState(false)
 
   useEffect(() => {
-   // SplashScreen.hide();
+    SplashScreen.hide()
     checkOnboarding()
     if (viewedOnboarding) {
       HomeScreen()

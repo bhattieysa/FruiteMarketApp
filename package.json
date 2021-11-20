@@ -5,6 +5,7 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
+    "apps": "react-native run-ios run-android",
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint ."
@@ -16,6 +17,7 @@
     "react-native-navigation": "^7.22.3",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-safe-area-view": "^1.1.1",
+    "react-native-splash-screen": "^3.2.0",
     "react-native-svg": "^12.1.1",
     "react-native-vector-icons": "^8.1.0"
   },

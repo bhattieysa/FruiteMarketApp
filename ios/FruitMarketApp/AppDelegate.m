@@ -3,6 +3,7 @@
 
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
+#import "RNSplashScreen.h"
 
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
@@ -29,11 +30,12 @@ static void InitializeFlipper(UIApplication *application) {
 {
 #ifdef FB_SONARKIT_ENABLED
   InitializeFlipper(application);
+  
 #endif
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
 [ReactNativeNavigation bootstrapWithBridge:bridge];
-  
+  [RNSplashScreen show];
 
   return YES;
 }
