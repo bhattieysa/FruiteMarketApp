@@ -25,11 +25,15 @@ import {SplashScreen} from "react-native-splash-screen"
 
 import OnBoarding from './components/OnBoarding';
 import HomeScreen from './screens/HomeScreen';
+import LoginScreen from './screens/LoginScreen';
+import SignupScreen from './screens/SignupScreen';
+
 
 
  Navigation.registerComponent('HomeScreen', () => HomeScreen);
- Navigation.registerComponent('HomeScreen', () => HomeScreen);
+ Navigation.registerComponent('LoginScreen', () => LoginScreen);
  Navigation.registerComponent('OnBoarding', () => OnBoarding);  
+ Navigation.registerComponent('SignupScreen', () => SignupScreen);  
  
  Navigation.events().registerAppLaunchedListener(() => {
   
@@ -37,10 +41,12 @@ import HomeScreen from './screens/HomeScreen';
    Navigation.setRoot({
      root: {
        stack: {
+         id:'MyStack',
          children: [
            {
              component: {
                name: 'OnBoarding'
+ 
               
                  
               
@@ -57,6 +63,11 @@ import HomeScreen from './screens/HomeScreen';
   }
 }
 OnBoarding.options = {
+  topBar: {
+      visible: false
+  }
+}
+LoginScreen.options = {
   topBar: {
       visible: false
   }

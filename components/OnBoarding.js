@@ -8,7 +8,7 @@ import NextButton from "./NextButton"
 
 import SplashScreen from 'react-native-splash-screen'
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import Home from "../screens/HomeScreen"
+import Login from "../screens/LoginScreen"
 
 
 
@@ -20,7 +20,7 @@ const OnBoarding = (props) => {
     SplashScreen.hide()
     checkOnboarding()
     if (viewedOnboarding) {
-      HomeScreen()
+      LoginScreen()
     }
 
 
@@ -51,11 +51,13 @@ const OnBoarding = (props) => {
 
 
 
-  const HomeScreen = () => {
-    Navigation.registerComponent('HomeScreen', () => Home);
-    Navigation.push(props.componentId, {
+  const LoginScreen = () => {
+    //Navigation.registerComponent('LoginScreen', () => Login);
+    Navigation.push('MyStack', {
       component: {
-        name: 'HomeScreen',
+        name: 'LoginScreen',
+
+
 
       }
     })
@@ -81,11 +83,11 @@ const OnBoarding = (props) => {
     } else {
 
       // Last Item Of Slide
-      Navigation.registerComponent('HomeScreen', () => Home);
+      //Navigation.registerComponent('LoginScreen', () => Login);
 
-      Navigation.push(props.componentId, {
+      Navigation.push('MyStack', {
         component: {
-          name: 'HomeScreen',
+          name: 'LoginScreen',
 
 
 
