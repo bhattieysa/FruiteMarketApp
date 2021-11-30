@@ -355,6 +355,8 @@ PODS:
     - React-RCTText
   - RNCAsyncStorage (1.15.9):
     - React-Core
+  - RNExitApp (1.1.0):
+    - React
   - RNSVG (12.1.1):
     - React
   - RNVectorIcons (8.1.0):
@@ -420,6 +422,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeNavigation (from `../node_modules/react-native-navigation`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
+  - RNExitApp (from `../node_modules/react-native-exit-app`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -509,6 +512,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-navigation"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
+  RNExitApp:
+    :path: "../node_modules/react-native-exit-app"
   RNSVG:
     :path: "../node_modules/react-native-svg"
   RNVectorIcons:
@@ -564,11 +569,12 @@ SPEC CHECKSUMS:
   ReactCommon: eb059748e842a1a86025ebbd4ac9d99e74492f88
   ReactNativeNavigation: d8e360047f2cbccc8fa10cabc1c385e59b82fa33
   RNCAsyncStorage: 26f25150da507524a7815f2ada06ca0967f65633
+  RNExitApp: c4e052df2568b43bec8a37c7cd61194d4cfee2c3
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   Yoga: c11abbf5809216c91fcd62f5571078b83d9b6720
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 100b3401e10a87d042bd30d374ba3506820f2202
+PODFILE CHECKSUM: a3bd24f12357447813895c71ee1a344ff3cc708d
 
 COCOAPODS: 1.10.1

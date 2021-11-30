@@ -1,5 +1,8 @@
 import React, { useEffect } from 'react'
-import { View, Text, TouchableOpacity, ActivityIndicator, StyleSheet ,ScrollView,BackHandler,Alert} from 'react-native'
+import {
+    View, Text, TouchableOpacity, ActivityIndicator,
+    StyleSheet, TouchableWithoutFeedback, ScrollView, BackHandler, Alert, KeyboardAvoidingView, Keyboard
+} from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { Navigation } from 'react-native-navigation'
@@ -7,157 +10,199 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, ThemeProvider, Image, Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Signup from '../screens/HomeScreen'
+import RNExitApp from 'react-native-exit-app';
+import {
+    widthPercentageToDP as wp, heightPercentageToDP as hp, listenOrientationChange as loc,
+    removeOrientationListener as rol
+} from 'react-native-responsive-screen';
+
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
+const KeyboardAvoidingComponent = () => {
 
 
-const LoginScreen = (props) => {
-    useEffect(() => {
-        const backAction = () => {
-          Alert.alert("Hold on!", "Are you sure you want to go back?", [
-            {
-              text: "Cancel",
-              onPress: () => null,
-              style: "cancel"
-            },
-            { text: "YES", onPress: () => BackHandler.exitApp() }
-          ]);
-          return true;
-        };
-    
-        const backHandler = BackHandler.addEventListener(
-          "hardwareBackPress",
-          backAction
-        );
-        
-    
-        return () =>  BackHandler.removeEventListener("hardwareBackPress", backAction);;
-      }, []);
+    // var app = {
+    //     backButtonDialog:"true"
+    // };
+    // if(app.backButtonDialog=="true"){
+
+
+
+
+    //     const backAction = () => {
+
+    //       Alert.alert("Hold on!", "Are you sure you want to go back?", [
+    //         {
+    //           text: "Cancel",
+    //           onPress: () => null,
+    //           style: "cancel"
+    //         },
+    //         { text: "YES", onPress: () => RNExitApp.exitApp() }
+    //       ]);
+    //       return true;
+    //     }
+    //     BackHandler.removeEventListener('hardwareBackPress',backAction);
+
+    //     BackHandler.addEventListener(
+    //       "hardwareBackPress",
+    //       backAction
+    //     );
+
+
+
+
+    // }
 
     const signupButton = () => {
-       
+
         Navigation.push('MyStack', {
-          component: {
-            name: 'HomeScreen',
-    
-          }
+            component: {
+                name: 'SignupScreen',
+
+
+            }
         })
-      
-
-
     }
-
     return (
-        <SafeAreaView>
-        
-            <View style={styles.container}  >
-             
+
+
+        <SafeAreaView
+
+           
+        >
+
+
+
+<KeyboardAwareScrollView>
+            <View style={styles.wrapper}>
                 <View style={styles.imageContainer}>
                     <Image
                         source={require('../assets/images/LoginPage.png')}
-                        style={{ width: 246, height: 253 }}
+                        style={{ width: wp('55%'), height: hp('35%') }}
                         PlaceholderContent={<ActivityIndicator />}
+                        resizeMode='stretch'
                     />
                 </View>
-                <View style={styles.inputContainer}>
-                    <View style={styles.mobileView}>
-                        <Input style={styles.mobileNumber}
-                            inputContainerStyle={{ borderBottomWidth: 0 }}
-                            placeholder='Enter Your Mobile Number'
-                            keyboardType="numeric"
-                            type="number"
-                            leftIcon={{ type: 'font-awesome', name: 'phone', size: 20, paddingRight: 20 }}
-                        />
-                    </View>
-                    <View style={styles.passView}>
-                        <Input style={styles.pass}
-                            inputContainerStyle={{ borderBottomWidth: 0 }}
-                            placeholder='Enter Your Password'
-                            secureTextEntry={true}
-                            leftIcon={{ type: 'font-awesome', name: 'phone', size: 20, paddingRight: 20 }}
+               
+            <View style={styles.inputContainer}>
 
-                        />
-                    </View>
-                    <View style={styles.loginView}>
-                        <Button style={styles.loginButton}
-                            icon={
-                                <Icon
-                                    name="check"
-                                    size={15}
-                                    color="white"
-                                />
-                            }
-                            iconRight
-                            title="Login "
-                        />
-                    </View>
+
+
+                <View style={styles.mobileView}>
+                <Input style={styles.mobileNumber}
+                inputContainerStyle={{ borderBottomWidth: 0 }}
+                placeholder='Enter Your Mobile Number'
+                keyboardType="numeric"
+                type ="number"
+                leftIcon={{ type: 'font-awesome', name: 'phone', size: 20, paddingRight: 20 }}
+                />
+                </View>
+                <View style={styles.passView}>
+                <Input style={styles.pass}
+                inputContainerStyle={{ borderBottomWidth: 0 }}
+                placeholder='Enter Your Password'
+                secureTextEntry={true}
+                keyboardType="default"
+                leftIcon={{ type: 'font-awesome', name: 'lock', size: 20, paddingRight: 20 }}
+                />
+                </View>
+             
+               
+
+                <View style={styles.loginView}>
+                <Button style={styles.loginButton}
+                icon={
+                <Icon
+                name="check"
+                size={15}
+                color="white"
+                />
+            }
+                iconRight
+                title="Login "
+                />
+                </View>
+
+                
                 </View>
                 <View style={styles.signupView} >
 
-                    <Text>
-                        <Text>
-                            Don't have an account ?</Text><Text style={{ fontWeight: "bold", fontSize: 17, color: 'green' }} onPress={() => signupButton()}> Signup</Text>
-                    </Text>
+<Text>
+<Text>
+Don't have an account ?</Text><Text style={{ fontWeight: "bold", fontSize: 17, color: 'green' }} onPress={() => signupButton()}> Signup</Text>
+</Text>
 
 
-                </View>
-                
+</View>
             </View>
 
+</KeyboardAwareScrollView>
+
+
         </SafeAreaView>
+
+
     )
 }
 
-export default LoginScreen
-
-//......................Styles.....................
 const styles = StyleSheet.create({
+   
 
-    scrollView:{
-        height:'100%',
-        
+    wrapper: {
+
+        flexDirection: 'column',
+        height: hp('85%'),
        
-        
+        marginTop:wp('10%')
+       
+
     },
-    container: {
-        flexDirection: "column",
-        paddingTop: 35,
-        height: '100%',
-        
-    },
+
+
 
     imageContainer: {
-        flex: 1.5,
+        height: hp('40%'),
         width: '100%',
-        alignItems: "center",
+
+        alignItems: "center", 
+
+
+
     },
 
     inputContainer: {
-        flex: 2,
+
+
        
 
-        flexDirection: 'column',
+
 
     },
 
     mobileView: {
         borderWidth: 0.5,
         borderColor: '#000',
-        borderRadius: 10,
-        height: 40,
-        padding: 20,
-        margin: 15
+        borderRadius: wp('2.5%'),
+        height: hp('4%'),
+        padding: wp('5%'),
+        margin: wp('4%'),
+
+
     },
 
     mobileNumber: {
         fontSize: 12,
+
+
     },
 
     passView: {
         borderWidth: 0.5,
         borderColor: '#000',
-        borderRadius: 10,
-        height: 40,
-        padding: 20,
-        margin: 15
+        borderRadius: wp('2.5%'),
+        height: hp('4%'),
+        padding: wp('5%'),
+        margin: wp('4%'),
     },
 
     pass: {
@@ -166,6 +211,7 @@ const styles = StyleSheet.create({
 
     loginView: {
         alignItems: "center"
+
     },
 
     loginButton: {
@@ -174,9 +220,15 @@ const styles = StyleSheet.create({
     },
     signupView: {
 
-        
-        justifyContent: 'center',
+
+        justifyContent: 'flex-start',
         alignItems: "center",
-        marginBottom:10
+        margin: 10
+
+
+
+
     },
-})
+});
+
+export default KeyboardAvoidingComponent;

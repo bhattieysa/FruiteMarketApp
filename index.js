@@ -2,27 +2,6 @@ import { Navigation } from "react-native-navigation";
 import { SafeAreaView } from "react-native-safe-area-context"
 import React, { useState, useRef, useEffect } from "react"
 import {SplashScreen} from "react-native-splash-screen"
-
-// import App from "./App";
-
-// Navigation.registerComponent('com.myApp.WelcomeScreen', () => App);
-// Navigation.events().registerAppLaunchedListener(() => {
-//    Navigation.setRoot({
-//      root: {
-//        stack: {
-//          children: [
-//            {
-//              component: {
-//                name: 'com.myApp.WelcomeScreen'
-//             }
-//            }
-//          ]
-//       }
-//     }
-//  });
-// });
-
-
 import OnBoarding from './components/OnBoarding';
 import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
@@ -59,8 +38,9 @@ import SignupScreen from './screens/SignupScreen';
  });
  HomeScreen.options = {
   topBar: {
-      visible: false
-  }
+      visible: false,
+  },
+
 }
 OnBoarding.options = {
   topBar: {
@@ -70,7 +50,10 @@ OnBoarding.options = {
 LoginScreen.options = {
   topBar: {
       visible: false
-  }
+  },  hardwareBackButton: {
+    dismissModalOnPress: false,
+    popStackOnPress: false,
+  },popGesture: false
 }
 
 
