@@ -55,5 +55,10 @@ LoginScreen.options = {
     popStackOnPress: false,
   },popGesture: false
 }
+SignupScreen.options = {
+  topBar: {
+      visible: false
+  }, 
+}
 
 
