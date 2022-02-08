@@ -1,10 +1,10 @@
-import React, { useEffect,useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     View, Text, TouchableOpacity, ActivityIndicator,
     StyleSheet, TouchableWithoutFeedback, ScrollView, BackHandler, Alert, KeyboardAvoidingView, Keyboard
 } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
+import axios from 'axios';
 import { Navigation } from 'react-native-navigation'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, ThemeProvider, Image, Input } from 'react-native-elements';
@@ -16,18 +16,21 @@ import {
     removeOrientationListener as rol
 } from 'react-native-responsive-screen';
 import AntDesign from 'react-native-vector-icons/AntDesign'
-
+import Ionicons from 'react-native-vector-icons/FontAwesome5'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import * as yup from 'yup';
 import { Formik } from 'formik';
 
-
+import {
+    SCLAlert,
+    SCLAlertButton
+} from 'react-native-scl-alert'
 
 
 const LoginValidationSchema = yup.object().shape({
-    
+
     mobilenumber: yup.string().matches(/^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/, 'Phone number is not valid').required('Mobile Number Is Required'),
-   
+
     //min ka function minimum length ka lia use lia ha and string ma uska error ka text ha
     password: yup.string().min(8, ({ min }) => `Password Must be at least ${min} characters `)
         .required('Password Is Required').matches(
@@ -38,16 +41,11 @@ const LoginValidationSchema = yup.object().shape({
 });
 
 
-
-
-
-
-
-
 const LoginScreen = () => {
 
-    const[showPassword,setShowPassword]=useState(true)
-
+    const [showPassword, setShowPassword] = useState(true)
+    const [showAlertSuccess, setShowAlertSuccess] = useState(false)
+    const [showAlertError, setShowAlertError] = useState(false)
     // var app = {
     //     backButtonDialog:"true"
     // };
@@ -85,7 +83,36 @@ const LoginScreen = () => {
                 initialValues={{ mobilenumber: '', password: '' }}
                 validateOnMount={true}
                 onSubmit={values => {
-//login Services for API
+                    //login Services for API
+                    axios({
+                        method: 'POST',
+                        url: 'http://localhost:4000/api/users/login',
+                        data: {
+                            
+                            mobile_number: values.mobilenumber,
+                            pass: values.password
+
+                        },
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                        .then(function (response) {
+                            console.log("Response", JSON.stringify(response.data.error))
+                            if (response.data.error) {
+                                setShowAlertError(true)
+                            } else {
+                                setShowAlertSuccess(true)
+                            }
+
+                        })
+                        .catch(function (error) {
+                            console.log("error", error)
+                        })
+
+
+
 
 
                 }}
@@ -95,6 +122,30 @@ const LoginScreen = () => {
                     <KeyboardAwareScrollView  >
                         <View style={styles.wrapper}>
                             <View style={styles.imageContainer}>
+                            <SCLAlert
+                                    show={showAlertSuccess}
+                                    onRequestClose={()=>{setShowAlertSuccess(false)}}
+                                    theme="success"
+                                    title="Congratulations"
+                                    useNativeDriver={true}
+                                    subtitle="Login Successfull"
+                                    headerIconComponent={<Ionicons name="check" size={32} color="white" />}
+                                >
+                                    <SCLAlertButton theme="success" onPress={()=>{setShowAlertSuccess(false)}}>Done</SCLAlertButton>
+                                    
+                                </SCLAlert>
+                                <SCLAlert
+                                    show={showAlertError}
+                                    onRequestClose={()=>{setShowAlertSuccess(false)}}
+                                    theme="danger"
+                                    title="Error"
+                                    useNativeDriver={true}
+                                    subtitle="Login Failed"
+                                    headerIconComponent={<Ionicons name="trash" size={28} color="white" />}
+                                >
+                                    <SCLAlertButton theme="danger" onPress={()=>{setShowAlertError(false)}}>Done</SCLAlertButton>
+                                    
+                                </SCLAlert>
                                 <Image
                                     source={require('../assets/images/LoginPage.png')}
                                     style={{ width: wp('55%'), height: hp('35%') }}
@@ -104,9 +155,9 @@ const LoginScreen = () => {
                             </View>
 
                             <View style={styles.inputContainer}>
-                           
+
                                 <View style={styles.mobileView}>
-                                   
+
                                     <Input style={styles.mobileNumber}
                                         onChangeText={handleChange('mobilenumber')}
                                         onBlur={handleBlur('mobilenumber')}
@@ -116,12 +167,12 @@ const LoginScreen = () => {
                                         keyboardType="numeric"
                                         type="number"
                                         leftIcon={{ type: 'font-awesome', name: 'phone', size: 20, paddingRight: 20 }}
-                                        rightIcon={{ type: 'entypo', name: (!errors.mobilenumber?'check':'cross'),color:!errors.mobilenumber?'green':'red', size: 20,  }}
+                                        rightIcon={{ type: 'entypo', name: (!errors.mobilenumber ? 'check' : 'cross'), color: !errors.mobilenumber ? 'green' : 'red', size: 20, }}
                                     />
                                 </View>
                                 {(errors.mobilenumber && touched.mobilenumber) &&
-                                        <Text style={styles.errors}>{errors.mobilenumber}</Text>
-                                    }
+                                    <Text style={styles.errors}>{errors.mobilenumber}</Text>
+                                }
                                 <View style={styles.passView}>
                                     <Input style={styles.pass}
 
@@ -132,25 +183,25 @@ const LoginScreen = () => {
                                         placeholder='Enter Your Password'
                                         secureTextEntry={showPassword}
                                         keyboardType="default"
-                                       
+
                                         leftIcon={{ type: 'font-awesome', name: 'lock', size: 20, paddingRight: 20 }}
-                                        rightIcon={{ type: 'font-awesome', name: (showPassword?'eye-slash':'eye'), size: 20 ,onPress: ()=>setShowPassword(!showPassword)}}
-                                       
-                                        
+                                        rightIcon={{ type: 'font-awesome', name: (showPassword ? 'eye-slash' : 'eye'), size: 20, onPress: () => setShowPassword(!showPassword) }}
+
+
                                     />
-                                     
+
                                 </View>
-                              
+
                                 {(errors.password && touched.password) &&
-                                        <Text style={styles.errors}>{errors.password}</Text>
-                                    }
+                                    <Text style={styles.errors}>{errors.password}</Text>
+                                }
                                 <View style={styles.loginView}>
-                                    <Button 
-                                     disabled={!isValid}
-                                     onPress={handleSubmit}
-                                    
-                                     buttonStyle={styles.loginButton}
-                                     
+                                    <Button
+                                        disabled={!isValid}
+                                        onPress={handleSubmit}
+
+                                        buttonStyle={styles.loginButton}
+
                                         // icon={
                                         //     <Icon
                                         //         name="check"
@@ -225,8 +276,8 @@ const styles = StyleSheet.create({
         borderRadius: wp('2.5%'),
         height: hp('4%'),
         padding: wp('5%'),
-        
-   
+
+
         margin: wp('4%'),
 
 
@@ -234,7 +285,7 @@ const styles = StyleSheet.create({
 
     mobileNumber: {
         fontSize: 12,
-        
+
 
 
     },
@@ -246,13 +297,13 @@ const styles = StyleSheet.create({
         height: hp('4%'),
         padding: wp('5%'),
         margin: wp('4%'),
-        
+
     },
 
     pass: {
         fontSize: 12,
-        
-       
+
+
     },
 
     loginView: {
@@ -261,10 +312,10 @@ const styles = StyleSheet.create({
     },
 
     loginButton: {
-        width:wp('25%'),
-        marginTop:wp('4%'),
-        backgroundColor:'#69A03A'
-       
+        width: wp('25%'),
+        marginTop: wp('4%'),
+        backgroundColor: '#69A03A'
+
 
     },
     signupView: {
@@ -277,12 +328,12 @@ const styles = StyleSheet.create({
     },
     errors: {
         fontSize: 14,
-        color:'red',
-        fontWeight:'bold',
-        
+        color: 'red',
+        fontWeight: 'bold',
+
         marginLeft: wp('4%'),
-        marginBottom:wp('4%'),
-        marginTop:wp('-4%'),
+        marginBottom: wp('4%'),
+        marginTop: wp('-4%'),
 
     },
 });
