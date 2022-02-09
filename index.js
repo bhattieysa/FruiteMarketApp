@@ -6,6 +6,9 @@ import OnBoarding from './components/OnBoarding';
 import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
 import SignupScreen from './screens/SignupScreen';
+import CartScreen from './screens/CartScreen';
+import FavScreen from './screens/FavScreen';
+import MyAccountScreen from './screens/MyAccountScreen';
 
 
 
@@ -13,6 +16,9 @@ import SignupScreen from './screens/SignupScreen';
  Navigation.registerComponent('LoginScreen', () => LoginScreen);
  Navigation.registerComponent('OnBoarding', () => OnBoarding);  
  Navigation.registerComponent('SignupScreen', () => SignupScreen);  
+ Navigation.registerComponent('CartScreen', () => CartScreen);
+ Navigation.registerComponent('FavScreen', () => FavScreen);
+ Navigation.registerComponent('MyAccountScreen', () => MyAccountScreen);  
  
  Navigation.events().registerAppLaunchedListener(() => {
   
@@ -39,7 +45,10 @@ import SignupScreen from './screens/SignupScreen';
  HomeScreen.options = {
   topBar: {
       visible: false,
-  },
+  }, hardwareBackButton: {
+    dismissModalOnPress: false,
+    popStackOnPress: false,
+  },popGesture: false
 
 }
 OnBoarding.options = {
@@ -59,6 +68,31 @@ SignupScreen.options = {
   topBar: {
       visible: false
   }, 
+}
+
+CartScreen.options = {
+  topBar: {
+      visible: false
+  },  hardwareBackButton: {
+    dismissModalOnPress: false,
+    popStackOnPress: false,
+  },popGesture: false
+}
+FavScreen.options = {
+  topBar: {
+      visible: false
+  },  hardwareBackButton: {
+    dismissModalOnPress: false,
+    popStackOnPress: false,
+  },popGesture: false
+}
+MyAccountScreen.options = {
+  topBar: {
+      visible: false
+  },  hardwareBackButton: {
+    dismissModalOnPress: false,
+    popStackOnPress: false,
+  },popGesture: false
 }
 
 

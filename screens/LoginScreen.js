@@ -40,7 +40,6 @@ const LoginValidationSchema = yup.object().shape({
 
 });
 
-
 const LoginScreen = () => {
 
     const [showPassword, setShowPassword] = useState(true)
@@ -77,6 +76,104 @@ const LoginScreen = () => {
             }
         })
     }
+    const doneSuccess = () => {
+        setShowAlertSuccess(false)
+        Navigation.push('MyStack', {
+            bottomTabs: {
+                children: [
+                    {
+                        // TAB 1 
+                        stack: {
+                            children: [
+                                {
+                                    component: {
+                                        id: '0',
+                                        name: 'HomeScreen',
+                                        options: {
+                                            bottomTab: {
+                                                text: "Home",
+                                                icon: require('../assets/images/Home.png'),
+                                                selectedTextColor: "#69A03A",
+                                                selectedIconColor: "#69A03A",
+                                            },
+                                        },
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                    {
+                        // TAB 2
+                        stack: {
+                            children: [
+                                {
+                                    component: {
+                                        id: '1',
+                                        name: 'CartScreen',
+                                        options: {
+                                            bottomTab: {
+                                                text: "Shopping cart",
+                                                icon: require('../assets/images/Cart.png'),
+                                                selectedTextColor: "#69A03A",
+                                                selectedIconColor: "#69A03A",
+                                            },
+                                        },
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                    {
+                       // TAB 3 
+                        stack: {
+                            children: [
+                                {
+                                    component: {
+                                        id: '2',
+                                        name: 'FavScreen',
+                                        options: {
+                                            bottomTab: {
+                                                text: "Favourite",
+                                                icon: require('../assets/images/favrouit.png'),
+                                                selectedTextColor: "#69A03A",
+                                                selectedIconColor: "#69A03A",
+                                            },
+                                        },
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                    {
+                           // TAB 4 
+                        stack: {
+                            children: [
+                                {
+                                    component: {
+                                        id: '3',
+                                        name: 'MyAccountScreen',
+                                        options: {
+                                            bottomTab: {
+                                                text: "My Account",
+                                                icon: require('../assets/images/Account.png'),
+                                                selectedTextColor: "#69A03A",
+                                                selectedIconColor: "#69A03A",
+                                            },
+                                        },
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                ],
+                options: {
+                    bottomTabs: {
+                        titleDisplayMode: 'alwaysShow',
+                    },
+                },
+            },
+        })
+    }
     return (
         <SafeAreaView>
             <Formik
@@ -86,12 +183,10 @@ const LoginScreen = () => {
                     //login Services for API
                     axios({
                         method: 'POST',
-                        url: 'http://localhost:4000/api/users/login',
+                        url: 'http://192.168.10.4:4000/api/users/login',
                         data: {
-                            
                             mobile_number: values.mobilenumber,
                             pass: values.password
-
                         },
                         headers: {
                             'Accept': 'application/json',
@@ -105,16 +200,10 @@ const LoginScreen = () => {
                             } else {
                                 setShowAlertSuccess(true)
                             }
-
                         })
                         .catch(function (error) {
                             console.log("error", error)
                         })
-
-
-
-
-
                 }}
                 validationSchema={LoginValidationSchema}
             >
@@ -122,29 +211,27 @@ const LoginScreen = () => {
                     <KeyboardAwareScrollView  >
                         <View style={styles.wrapper}>
                             <View style={styles.imageContainer}>
-                            <SCLAlert
+                                <SCLAlert
                                     show={showAlertSuccess}
-                                    onRequestClose={()=>{setShowAlertSuccess(false)}}
+                                    onRequestClose={() => { setShowAlertSuccess(false) }}
                                     theme="success"
                                     title="Congratulations"
                                     useNativeDriver={true}
                                     subtitle="Login Successfull"
                                     headerIconComponent={<Ionicons name="check" size={32} color="white" />}
                                 >
-                                    <SCLAlertButton theme="success" onPress={()=>{setShowAlertSuccess(false)}}>Done</SCLAlertButton>
-                                    
+                                    <SCLAlertButton theme="success" onPress={() => doneSuccess()}>Done</SCLAlertButton>
                                 </SCLAlert>
                                 <SCLAlert
                                     show={showAlertError}
-                                    onRequestClose={()=>{setShowAlertSuccess(false)}}
+                                    onRequestClose={() => { setShowAlertError(false) }}
                                     theme="danger"
                                     title="Error"
                                     useNativeDriver={true}
                                     subtitle="Login Failed"
                                     headerIconComponent={<Ionicons name="trash" size={28} color="white" />}
                                 >
-                                    <SCLAlertButton theme="danger" onPress={()=>{setShowAlertError(false)}}>Done</SCLAlertButton>
-                                    
+                                    <SCLAlertButton theme="danger" onPress={() => { setShowAlertError(false) }}>Done</SCLAlertButton>
                                 </SCLAlert>
                                 <Image
                                     source={require('../assets/images/LoginPage.png')}
@@ -153,11 +240,8 @@ const LoginScreen = () => {
                                     resizeMode='stretch'
                                 />
                             </View>
-
                             <View style={styles.inputContainer}>
-
                                 <View style={styles.mobileView}>
-
                                     <Input style={styles.mobileNumber}
                                         onChangeText={handleChange('mobilenumber')}
                                         onBlur={handleBlur('mobilenumber')}
@@ -169,13 +253,13 @@ const LoginScreen = () => {
                                         leftIcon={{ type: 'font-awesome', name: 'phone', size: 20, paddingRight: 20 }}
                                         rightIcon={{ type: 'entypo', name: (!errors.mobilenumber ? 'check' : 'cross'), color: !errors.mobilenumber ? 'green' : 'red', size: 20, }}
                                     />
+                                    
                                 </View>
                                 {(errors.mobilenumber && touched.mobilenumber) &&
                                     <Text style={styles.errors}>{errors.mobilenumber}</Text>
                                 }
                                 <View style={styles.passView}>
                                     <Input style={styles.pass}
-
                                         onChangeText={handleChange('password')}
                                         onBlur={handleBlur('password')}
                                         value={values.password}
@@ -183,15 +267,11 @@ const LoginScreen = () => {
                                         placeholder='Enter Your Password'
                                         secureTextEntry={showPassword}
                                         keyboardType="default"
-
                                         leftIcon={{ type: 'font-awesome', name: 'lock', size: 20, paddingRight: 20 }}
                                         rightIcon={{ type: 'font-awesome', name: (showPassword ? 'eye-slash' : 'eye'), size: 20, onPress: () => setShowPassword(!showPassword) }}
 
-
                                     />
-
                                 </View>
-
                                 {(errors.password && touched.password) &&
                                     <Text style={styles.errors}>{errors.password}</Text>
                                 }
@@ -199,7 +279,6 @@ const LoginScreen = () => {
                                     <Button
                                         disabled={!isValid}
                                         onPress={handleSubmit}
-
                                         buttonStyle={styles.loginButton}
 
                                         // icon={
@@ -213,83 +292,43 @@ const LoginScreen = () => {
                                         title="Login "
                                     />
                                 </View>
-
-
                             </View>
                             <View style={styles.signupView} >
-
                                 <Text>
                                     <Text>
                                         Don't have an account ?</Text><Text style={{ fontWeight: "bold", fontSize: 17, color: '#69A03A' }} onPress={() => signupButton()}> Signup</Text>
                                 </Text>
-
-
                             </View>
                         </View>
                     </KeyboardAwareScrollView>
                 )}
             </Formik>
-
         </SafeAreaView>
-
-
     )
 }
-
 const styles = StyleSheet.create({
-
-
     wrapper: {
-
         flexDirection: 'column',
         height: hp('85%'),
-
         marginTop: wp('10%')
-
-
     },
-
-
-
     imageContainer: {
         height: hp('40%'),
         width: '100%',
-
         alignItems: "center",
-
-
-
     },
-
-    inputContainer: {
-
-
-
-
-
-
-    },
-
     mobileView: {
         borderWidth: 0.5,
         borderColor: '#000',
         borderRadius: wp('2.5%'),
         height: hp('4%'),
         padding: wp('5%'),
-
-
         margin: wp('4%'),
 
-
     },
-
     mobileNumber: {
         fontSize: 12,
-
-
-
     },
-
     passView: {
         borderWidth: 0.5,
         borderColor: '#000',
@@ -299,43 +338,31 @@ const styles = StyleSheet.create({
         margin: wp('4%'),
 
     },
-
     pass: {
         fontSize: 12,
-
-
     },
 
     loginView: {
         alignItems: "center"
-
     },
 
     loginButton: {
         width: wp('25%'),
         marginTop: wp('4%'),
         backgroundColor: '#69A03A'
-
-
     },
     signupView: {
-
-
         justifyContent: 'flex-start',
         alignItems: "center",
         margin: 10
-
     },
     errors: {
         fontSize: 14,
         color: 'red',
         fontWeight: 'bold',
-
         marginLeft: wp('4%'),
         marginBottom: wp('4%'),
         marginTop: wp('-4%'),
-
     },
 });
-
 export default LoginScreen;
