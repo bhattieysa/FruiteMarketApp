@@ -9886,6 +9886,11 @@ react-native-keyboard-aware-scroll-view@^0.9.5:
     prop-types "^15.6.2"
     react-native-iphone-x-helper "^1.0.3"
 
+react-native-navigation-drawer-extension@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-navigation-drawer-extension/-/react-native-navigation-drawer-extension-4.2.0.tgz#dbc96a05978041c9470053f656dd3b0a569f9618"
+  integrity sha512-eKUd3F0+UKgMGFsZ3+3CkZN07K8WIYJf3FMayrlikAJjJRAS9k68iIcGuswmotnZ9JJcYQPJSvSXKq4sOZnHGw==
+
 react-native-navigation@^7.22.3:
   version "7.22.3"
   resolved "https://registry.npmjs.org/react-native-navigation/-/react-native-navigation-7.22.3.tgz"

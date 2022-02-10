@@ -146,9 +146,13 @@ const LoginScreen = () => {
                     },
                     {
                            // TAB 4 
+
                         stack: {
                             children: [
                                 {
+
+                                    
+
                                     component: {
                                         id: '3',
                                         name: 'MyAccountScreen',
@@ -183,7 +187,7 @@ const LoginScreen = () => {
                     //login Services for API
                     axios({
                         method: 'POST',
-                        url: 'http://192.168.10.4:4000/api/users/login',
+                        url: 'http://192.168.10.2:4000/api/users/login',
                         data: {
                             mobile_number: values.mobilenumber,
                             pass: values.password

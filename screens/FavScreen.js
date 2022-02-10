@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { Navigation} from 'react-native-navigation';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+import Header from '../components/Header';
 const FavScreen = () => {
 
   const clearOnboarding = async () => {
@@ -20,20 +20,12 @@ const FavScreen = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+         <Header/>
     <View style={{ flex: 1 }}>
 
       <Text>Fav Screen</Text>
 
-      <TouchableOpacity onPress={clearOnboarding}>
-        <Text>Clear On Boarding</Text>
-
-
-
-
-
-
-      </TouchableOpacity>
-
+     
 
 
     </View>

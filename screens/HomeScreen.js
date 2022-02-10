@@ -1,12 +1,37 @@
 import React from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import {useState,useEffect,useRef} from "react";
+import { View, Text, TouchableOpacity ,AppState} from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import { Navigation} from 'react-native-navigation';
+import { Navigation } from 'react-native-navigation';
+
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { SideMenuView } from "react-native-navigation-drawer-extension";
+
+import { Button } from 'react-native-elements';
+import Header from '../components/Header';
+
+
+
+
+
 
 const HomeScreen = () => {
 
+  const appState = useRef(AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
+  
+
+
+
+   const showDialoge =()=>{
+
+
+
+
+
+
+   }
   const clearOnboarding = async () => {
     try {
 
@@ -19,25 +44,24 @@ const HomeScreen = () => {
 
 
   return (
+
+
+   
     <SafeAreaView style={{ flex: 1 }}>
-    <View style={{ flex: 1 }}>
-
-      <Text>Home Screen</Text>
-
-      <TouchableOpacity onPress={clearOnboarding}>
-        <Text>Clear On Boarding</Text>
+       
+    <Header/>
 
 
+      <View style={{ flex: 1 }}>
 
+        <Text>Home Screen</Text>
 
 
 
-      </TouchableOpacity>
 
-
-
-    </View>
+      </View>
     </SafeAreaView>
+  
   )
 }
 

@@ -9,8 +9,8 @@ import SignupScreen from './screens/SignupScreen';
 import CartScreen from './screens/CartScreen';
 import FavScreen from './screens/FavScreen';
 import MyAccountScreen from './screens/MyAccountScreen';
-
-
+import { RNNDrawer } from "react-native-navigation-drawer-extension";
+import CustomDrawer from "./components/CustomDrawer"
 
  Navigation.registerComponent('HomeScreen', () => HomeScreen);
  Navigation.registerComponent('LoginScreen', () => LoginScreen);
@@ -19,9 +19,10 @@ import MyAccountScreen from './screens/MyAccountScreen';
  Navigation.registerComponent('CartScreen', () => CartScreen);
  Navigation.registerComponent('FavScreen', () => FavScreen);
  Navigation.registerComponent('MyAccountScreen', () => MyAccountScreen);  
- 
+
  Navigation.events().registerAppLaunchedListener(() => {
-  
+  Navigation.registerComponent("CustomDrawer", () => RNNDrawer.create(CustomDrawer));
+
   
    Navigation.setRoot({
      root: {

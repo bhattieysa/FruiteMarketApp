@@ -20,6 +20,7 @@
     "react-native-exit-app": "^1.1.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-navigation": "^7.22.3",
+    "react-native-navigation-drawer-extension": "^4.2.0",
     "react-native-responsive-screen": "^1.4.2",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-safe-area-view": "^1.1.1",
