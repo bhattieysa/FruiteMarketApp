@@ -45,9 +45,6 @@ const styles = StyleSheet.create({
 
 
 
-
-
-
     },
     headerItems: {
        
