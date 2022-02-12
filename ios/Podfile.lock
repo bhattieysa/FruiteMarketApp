@@ -357,10 +357,20 @@ PODS:
     - React-Core
   - RNExitApp (1.1.0):
     - React
+  - RNImageCropPicker (0.37.2):
+    - React-Core
+    - React-RCTImage
+    - RNImageCropPicker/QBImagePickerController (= 0.37.2)
+    - TOCropViewController
+  - RNImageCropPicker/QBImagePickerController (0.37.2):
+    - React-Core
+    - React-RCTImage
+    - TOCropViewController
   - RNSVG (12.1.1):
     - React
   - RNVectorIcons (8.1.0):
     - React-Core
+  - TOCropViewController (2.6.1)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -423,6 +433,7 @@ DEPENDENCIES:
   - ReactNativeNavigation (from `../node_modules/react-native-navigation`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - RNExitApp (from `../node_modules/react-native-exit-app`)
+  - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -443,6 +454,7 @@ SPEC REPOS:
     - HMSegmentedControl
     - libevent
     - OpenSSL-Universal
+    - TOCropViewController
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -514,6 +526,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNExitApp:
     :path: "../node_modules/react-native-exit-app"
+  RNImageCropPicker:
+    :path: "../node_modules/react-native-image-crop-picker"
   RNSVG:
     :path: "../node_modules/react-native-svg"
   RNVectorIcons:
@@ -570,8 +584,10 @@ SPEC CHECKSUMS:
   ReactNativeNavigation: d8e360047f2cbccc8fa10cabc1c385e59b82fa33
   RNCAsyncStorage: 26f25150da507524a7815f2ada06ca0967f65633
   RNExitApp: c4e052df2568b43bec8a37c7cd61194d4cfee2c3
+  RNImageCropPicker: 448d3c6e923fde3466b49caf3c2457c2a0ba02dd
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
+  TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   Yoga: c11abbf5809216c91fcd62f5571078b83d9b6720
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 

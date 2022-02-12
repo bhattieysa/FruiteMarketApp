@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { View, Text, ActivityIndicator, StyleSheet,LogBox } from 'react-native'
+import React, { useEffect, useState, useRef } from 'react'
+import { View, Text, ActivityIndicator, StyleSheet, LogBox ,TouchableOpacity} from 'react-native'
 import { Navigation } from 'react-native-navigation'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, ThemeProvider, Image, Input } from 'react-native-elements';
@@ -16,6 +16,8 @@ import {
     SCLAlertButton
 } from 'react-native-scl-alert'
 import Ionicons from 'react-native-vector-icons/FontAwesome5'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialIcons'
+import ActionSheet, { SheetManager } from "react-native-actions-sheet";
 
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs();//Ignore all log notifications
@@ -40,7 +42,13 @@ const SignupScreen = () => {
     const [showPassword, setShowPassword] = useState(true)
     const [showAlertSuccess, setShowAlertSuccess] = useState(false)
     const [showAlertError, setShowAlertError] = useState(false)
-
+    const actionSheet = useRef()
+    const optionArray = [
+        'Take Photo', 'Choose from Library', 'Cancel'
+    ]
+    const showActionSheet = () => {
+        actionSheet.current.show()
+    }
 
     return (
         <SafeAreaView>
@@ -67,11 +75,11 @@ const SignupScreen = () => {
                     })
                         .then(function (response) {
                             console.log("Response", JSON.stringify(response.data.error))
-                            if(response.data.error){
+                            if (response.data.error) {
                                 setShowAlertError(true)
-                            }else{
-                           setShowAlertSuccess(true)
-                        }
+                            } else {
+                                setShowAlertSuccess(true)
+                            }
 
                         })
                         .catch(function (error) {
@@ -91,27 +99,27 @@ const SignupScreen = () => {
 
                                 <SCLAlert
                                     show={showAlertSuccess}
-                                    onRequestClose={()=>{setShowAlertSuccess(false)}}
+                                    onRequestClose={() => { setShowAlertSuccess(false) }}
                                     theme="success"
                                     title="Congratulations"
                                     useNativeDriver={true}
                                     subtitle="Signup Successfull"
                                     headerIconComponent={<Ionicons name="check" size={32} color="white" />}
                                 >
-                                    <SCLAlertButton theme="success" onPress={()=>{setShowAlertSuccess(false)}}>Done</SCLAlertButton>
-                                    
+                                    <SCLAlertButton theme="success" onPress={() => { setShowAlertSuccess(false) }}>Done</SCLAlertButton>
+
                                 </SCLAlert>
                                 <SCLAlert
                                     show={showAlertError}
-                                    onRequestClose={()=>{setShowAlertSuccess(false)}}
+                                    onRequestClose={() => { setShowAlertSuccess(false) }}
                                     theme="danger"
                                     title="Error"
                                     useNativeDriver={true}
                                     subtitle="User Already Exist"
                                     headerIconComponent={<Ionicons name="trash" size={28} color="white" />}
                                 >
-                                    <SCLAlertButton theme="danger" onPress={()=>{setShowAlertError(false)}}>Done</SCLAlertButton>
-                                    
+                                    <SCLAlertButton theme="danger" onPress={() => { setShowAlertError(false) }}>Done</SCLAlertButton>
+
                                 </SCLAlert>
                                 <Image
                                     source={require('../assets/images/LoginPage.png')}
@@ -123,10 +131,10 @@ const SignupScreen = () => {
 
                             <View style={styles.inputContainer}>
 
-                                <Text style={styles.nameLabel}>Full Name</Text>
-                                <View style={styles.nameView}>
+                                <Text style={styles.label}>Full Name</Text>
+                                <View style={styles.inputView}>
 
-                                    <Input style={styles.name}
+                                    <Input style={styles.input}
 
                                         onChangeText={handleChange('name')}
                                         onBlur={handleBlur('name')}
@@ -144,10 +152,10 @@ const SignupScreen = () => {
                                 {(errors.name && touched.name) &&
                                     <Text style={styles.errors}>{errors.name}</Text>
                                 }
-                                <Text style={styles.cnicLabel}>CNIC</Text>
-                                <View style={styles.cnicView}>
+                                <Text style={styles.label}>CNIC</Text>
+                                <View style={styles.inputView}>
 
-                                    <Input style={styles.cnic}
+                                    <Input style={styles.input}
 
                                         onChangeText={handleChange('cnic')}
                                         onBlur={handleBlur('cnic')}
@@ -166,10 +174,10 @@ const SignupScreen = () => {
                                 {(errors.cnic && touched.cnic) &&
                                     <Text style={styles.errors}>{errors.cnic}</Text>
                                 }
-                                <Text style={styles.numberLabel}>Mobile Number</Text>
-                                <View style={styles.mobileView}>
+                                <Text style={styles.label}>Mobile Number</Text>
+                                <View style={styles.inputView}>
 
-                                    <Input style={styles.mobileNumber}
+                                    <Input style={styles.input}
                                         onChangeText={handleChange('mobilenumber')}
                                         onBlur={handleBlur('mobilenumber')}
                                         value={values.mobilenumber}
@@ -185,9 +193,9 @@ const SignupScreen = () => {
                                 {(errors.mobilenumber && touched.mobilenumber) &&
                                     <Text style={styles.errors}>{errors.mobilenumber}</Text>
                                 }
-                                <Text style={styles.passLabel}>Password</Text>
-                                <View style={styles.passView}>
-                                    <Input style={styles.pass}
+                                <Text style={styles.label}>Password</Text>
+                                <View style={styles.inputView}>
+                                    <Input style={styles.input}
 
                                         onChangeText={handleChange('password')}
                                         onBlur={handleBlur('password')}
@@ -209,6 +217,15 @@ const SignupScreen = () => {
                                 {(errors.password && touched.password) &&
                                     <Text style={styles.errors}>{errors.password}</Text>
                                 }
+                                <Text style={styles.label}>Upload Image</Text>
+                                <View style={styles.imageView}>
+
+                                    <MaterialCommunityIcons name="image" style={styles.imageIcon} onPress={() => { SheetManager.show("helloworld_sheet");}} size={60} />
+
+                                </View>
+
+
+
                                 <View style={styles.signupView}>
                                     <Button
                                         disabled={!isValid}
@@ -235,7 +252,25 @@ const SignupScreen = () => {
                     </KeyboardAwareScrollView>
                 )}
             </Formik>
-
+            <ActionSheet id="helloworld_sheet" >
+            <View style={styles.panel}>
+      <View style={{alignItems: 'center'}}>
+        <Text style={styles.panelTitle}>Upload Photo</Text>
+        <Text style={styles.panelSubtitle}>Choose Your Profile Picture</Text>
+      </View>
+      <TouchableOpacity style={styles.panelButton} >
+        <Text style={styles.panelButtonTitle}>Take Photo</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.panelButton} >
+        <Text style={styles.panelButtonTitle}>Choose From Library</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.panelButton}
+        onPress={() =>  SheetManager.hide("helloworld_sheet")}>
+        <Text style={styles.panelButtonTitle}>Cancel</Text>
+      </TouchableOpacity>
+    </View>
+            </ActionSheet>
         </SafeAreaView>
 
 
@@ -249,163 +284,108 @@ const styles = StyleSheet.create({
 
         flexDirection: 'column',
         height: hp('100%'),
-
-
-
-
     },
-
-
 
     imageContainer: {
         height: hp('30%'),
         width: '100%',
-
         alignItems: "center",
         marginTop: wp('3%'),
 
 
     },
 
-    inputContainer: {
-
-
-
-
-
+    input: {
+        fontSize: 12,
     },
 
-    nameLabel: {
-        paddingLeft: wp('5%'),
-        fontWeight: 'bold',
-    },
-
-    nameView: {
+    inputView: {
         borderWidth: 0.5,
         borderColor: '#000',
         borderRadius: wp('2.5%'),
         height: hp('4%'),
         padding: wp('5%'),
-
-
-
-
         marginBottom: wp('4%'),
         marginLeft: wp('4%'),
         marginRight: wp('4%'),
         marginTop: wp('2%'),
+    },
+    imageView: {
 
+        alignItems: 'center',
 
 
     },
-    name: {
-        fontSize: 12,
+    imageIcon: {
 
-
-
-    },
-    cnicLabel: {
-        paddingLeft: wp('5%'),
-        fontWeight: 'bold',
-    },
-    cnicView: {
-        borderWidth: 0.5,
-        borderColor: '#000',
-        borderRadius: wp('2.5%'),
-        height: hp('4%'),
-        padding: wp('5%'),
-
-
+        alignItems: 'center',
         marginBottom: wp('4%'),
-        marginLeft: wp('4%'),
-        marginRight: wp('4%'),
-        marginTop: wp('2%'),
-
 
     },
-    cnic: {
-        fontSize: 12,
 
-
-
-    },
-    mobileLabel: {
+    label: {
         paddingLeft: wp('5%'),
         fontWeight: 'bold',
-    },
-    mobileView: {
-        borderWidth: 0.5,
-        borderColor: '#000',
-        borderRadius: wp('2.5%'),
-        height: hp('4%'),
-        padding: wp('5%'),
-
-
-
-        marginBottom: wp('4%'),
-        marginLeft: wp('4%'),
-        marginRight: wp('4%'),
-        marginTop: wp('2%'),
-
-    },
-    numberLabel: {
-        paddingLeft: wp('5%'),
-        fontWeight: 'bold',
-    },
-    mobileNumber: {
-        fontSize: 12,
-
-
-
-    },
-    passLabel: {
-        paddingLeft: wp('5%'),
-        fontWeight: 'bold',
-    },
-    passView: {
-        borderWidth: 0.5,
-        borderColor: '#000',
-        borderRadius: wp('2.5%'),
-        height: hp('4%'),
-        padding: wp('5%'),
-
-        marginBottom: wp('4%'),
-        marginLeft: wp('4%'),
-        marginRight: wp('4%'),
-        marginTop: wp('2%'),
-
-    },
-
-    pass: {
-        fontSize: 12,
-
 
     },
 
     signupView: {
         alignItems: "center",
-
+        marginTop: wp('4%'),
+        marginTop: wp('10%'),
     },
 
     signupButton: {
+
         width: wp('25%'),
         height: wp('10%'),
-        marginTop: wp('4%'),
-        backgroundColor: '#69A03A'
-
+        backgroundColor: '#69A03A',
 
     },
-
     errors: {
         fontSize: 14,
         color: 'red',
         fontWeight: 'bold',
-
         marginLeft: wp('4%'),
         marginBottom: wp('4%'),
         marginTop: wp('-4%'),
 
     },
+    panel: {
+        padding: 20,
+        backgroundColor: '#FFFFFF',
+        paddingTop: 15,
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+       
+      },
+      panelHeader: {
+        alignItems: 'center',
+      },
+
+      panelTitle: {
+        fontSize: 27,
+        height: 35,
+      },
+      panelSubtitle: {
+        fontSize: 14,
+        color: 'gray',
+        height: 30,
+        marginBottom: 10,
+      },
+      panelButton: {
+        padding: 10,
+        borderRadius: 10,
+        backgroundColor: '#FF6347',
+        alignItems: 'center',
+        marginVertical: 3,
+      },
+      panelButtonTitle: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: 'white',
+      },
+
 });
 
 export default SignupScreen;
