@@ -22,6 +22,10 @@ import ImagePicker from 'react-native-image-crop-picker';
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs();//Ignore all log notifications
 import { ActivityIndicator, Colors,Surface } from 'react-native-paper';
+import * as api from '../apis/api';
+
+
+
 const SignupValidationSchema = yup.object().shape({
 
     mobilenumber: yup.string().matches(/^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/, 'Phone number is not valid').required('Mobile Number Is Required'),
@@ -83,7 +87,7 @@ const SignupScreen = () => {
 
                     axios({
                         method: 'POST',
-                        url: 'http://localhost:4000/api/auth/signup',
+                        url: api.SIGNUP_URL,
                         data: formData,
                         headers: {
                             'Accept': 'application/json',
@@ -98,7 +102,7 @@ const SignupScreen = () => {
                             } else {
                                 axios({
                                     method: 'POST',
-                                    url: 'http://127.0.0.1:4000/api/imageupload/',
+                                    url: api.IMAGEUPLOAD_URL,
                                     data: imageData,
                                     headers: {
                                         'Accept': 'application/json',

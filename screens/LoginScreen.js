@@ -3,7 +3,7 @@ import {
     View, Text, TouchableOpacity,
     StyleSheet, TouchableWithoutFeedback, ScrollView, BackHandler, Alert, KeyboardAvoidingView, Keyboard
 } from 'react-native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+
 import axios from 'axios';
 import { Navigation } from 'react-native-navigation'
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -26,6 +26,8 @@ import {
     SCLAlertButton
 } from 'react-native-scl-alert'
 import { ActivityIndicator, Colors,Surface } from 'react-native-paper';
+import * as api from '../apis/api';
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 const LoginValidationSchema = yup.object().shape({
 
@@ -192,12 +194,12 @@ const LoginScreen = () => {
 
             
 
-                onSubmit={values => {
+                onSubmit={async values => {
                     //login Services for API
                     setShowLoading(true)
                     axios({
                         method: 'POST',
-                        url: "http://192.168.10.11:5000/api/auth/login",
+                        url: api.LOGIN_URL,
                         data: {
                             mobile_number: values.mobilenumber,
                             pass: values.password
@@ -207,7 +209,7 @@ const LoginScreen = () => {
                             'Content-Type': 'application/json'
                         }
                     })
-                        .then(function (response) {
+                        .then (async function  (response) {
                             setShowLoading(false)
                             if (response.data.error=="true") {
                                 setShowAlertError(true)
@@ -215,6 +217,11 @@ const LoginScreen = () => {
                                 setShowAlertSuccess(true)
                               const token=response.data.token
                                 console.log(token)
+
+                                 await AsyncStorage.setItem('@token', token)
+
+
+
                             }
                         })
                         .catch(function (error) {

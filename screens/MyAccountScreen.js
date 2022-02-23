@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+
 
 import { Navigation } from 'react-native-navigation';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -13,20 +13,32 @@ import {
 import { Avatar, ActivityIndicator } from 'react-native-paper';
 import Fontisto from 'react-native-vector-icons/Fontisto'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
-const MyAccountScreen = () => {
+import * as api from '../apis/api';
+import AsyncStorage from "@react-native-async-storage/async-storage"
+
+
+const  MyAccountScreen = () => {
 
   const [image, setImage] = useState("");
   const [name, setName] = useState("");
   const [cnic, setCnic] = useState("");
   const [mobile_number, setMobileNumber] = useState("");
-  
+
+
+
+   
+
+    // if (value !== null) {
+    //   setViewedOnBoarding(true)
+    // }
+
 
   // run when bottom tab press
-  Navigation.events().registerBottomTabSelectedListener((selectedTabIndex, unselectedTabIndex) => {
-
+  Navigation.events().registerBottomTabSelectedListener(async(selectedTabIndex, unselectedTabIndex) => {
+    const token = await AsyncStorage.getItem('@token')
     axios({
       method: 'POST',
-      url: "http://192.168.10.11:5000/api/user/myaccount",
+      url: api.MYACCOUNT_URL,
       data: {
         mobile_number: '03069603634',
 
@@ -35,7 +47,7 @@ const MyAccountScreen = () => {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXN1bHQiOlt7ImlkIjo1OCwibmFtZSI6IkV5c2EgQXpoYXIiLCJjbmljIjoiMzg0MDMyNTY2Mzk3MSIsIm1vYmlsZV9udW1iZXIiOiIwMzA2OTYwMzYzNCIsInBhc3MiOiIkMmIkMTAkclBYbTBrQ0duMTBZeE1Ia0lDdTdSdUVocnRBNk5YMTkzcE9GZjkyb3RiVWlDQ1pISTJkVFMiLCJpbWFnZV91cmwiOiIzODQwMzI1NjYzOTcxLmpwZyJ9XSwiaWF0IjoxNjQ1NjEyOTM2LCJleHAiOjE2NDU2MTY1MzZ9.oklUSheJO6iZV6W8JRAV9d2IInr-6aCiLtuehyontrQ'
+        'authorization':token
       }
     })
       .then(function (response) {
@@ -73,7 +85,7 @@ const MyAccountScreen = () => {
         <View style={styles.imageView}>
           <Avatar.Image
             size={wp('30%')}
-            source={{uri:`http://192.168.10.11:5000/image?image_url=${image}`}}
+            source={{uri:api.VIEWIMAGE_URL+image}}
             // containerStyle={styles.item}
             style={{ marginBottom: wp('10%') }}
             PlaceholderContent={<ActivityIndicator />}
