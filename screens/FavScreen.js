@@ -23,9 +23,18 @@ const FavScreen = () => {
          <Header/>
     <View style={{ flex: 1 }}>
 
-      <Text>Fav Screen</Text>
+      <Text>Account Screen</Text>
 
-     
+      <TouchableOpacity onPress={clearOnboarding}>
+        <Text>Clear On Boarding</Text>
+
+
+
+
+
+
+      </TouchableOpacity>
+
 
 
     </View>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { View, Text, ActivityIndicator, StyleSheet, LogBox, TouchableOpacity, ImageBackground, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, LogBox, TouchableOpacity, ImageBackground, ScrollView, } from 'react-native'
 import { Navigation } from 'react-native-navigation'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, ThemeProvider, Image, Input } from 'react-native-elements';
@@ -21,7 +21,7 @@ import ActionSheet, { SheetManager } from "react-native-actions-sheet";
 import ImagePicker from 'react-native-image-crop-picker';
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs();//Ignore all log notifications
-
+import { ActivityIndicator, Colors,Surface } from 'react-native-paper';
 const SignupValidationSchema = yup.object().shape({
 
     mobilenumber: yup.string().matches(/^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/, 'Phone number is not valid').required('Mobile Number Is Required'),
@@ -44,18 +44,27 @@ const SignupScreen = () => {
     const [showAlertSuccess, setShowAlertSuccess] = useState(false)
     const [showAlertError, setShowAlertError] = useState(false)
     const [image, setImage] = useState(null);
+    const [showLoading, setShowLoading] = useState(false);
 
 
 
     return (
-        <SafeAreaView >
+        
+        <SafeAreaView style={{flex:1}} >
+            {showLoading &&
+       <View style={styles.loading}>
+       <ActivityIndicator animating={true} size={'large'} color={Colors.green900} />
+                  </View>
+}
+
             <Formik
                 initialValues={{ mobilenumber: '', password: '', name: '', cnic: '', image: '' }}
                 validateOnMount={true}
 
                 onSubmit={values => {
                     //login Services for API
-                    console.log(values)
+                 
+                    setShowLoading(true)
                     var formData = new FormData();
                     formData.append('name', values.name);
                     formData.append('cnic', values.cnic);
@@ -74,7 +83,7 @@ const SignupScreen = () => {
 
                     axios({
                         method: 'POST',
-                        url: 'http://127.0.0.1:4000/api/auth/signup',
+                        url: 'http://localhost:4000/api/auth/signup',
                         data: formData,
                         headers: {
                             'Accept': 'application/json',
@@ -84,6 +93,7 @@ const SignupScreen = () => {
                         .then(function (response) {
                             console.log("Response", JSON.stringify(response.data.error))
                             if (response.data.error == "true") {
+                                    setShowLoading(false)
                                 setShowAlertError(true)
                             } else {
                                 axios({
@@ -96,9 +106,11 @@ const SignupScreen = () => {
                                     }
                                 })
                                     .then(function (response) {
-                                        console.log("Response", JSON.stringify(response.data.error))
+                                       
+                                        setShowLoading(false)
                                         if (response.data.error != "true") {
                                             setShowAlertSuccess(true)
+                                           
                                         }
                                     })
                                     .catch(function (error) {
@@ -120,9 +132,14 @@ const SignupScreen = () => {
                 {({ handleChange, handleBlur, handleSubmit, values, touched, errors, isValid, setFieldTouched, setFieldValue }) => (
 
                     <View>
+
+
                         <KeyboardAwareScrollView  >
 
                             <View style={styles.wrapper}>
+
+
+
 
                                 <View style={styles.imageContainer}>
 
@@ -511,6 +528,16 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: 'bold',
         color: 'white',
+    },loading: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        opacity: 0.5,
+        backgroundColor: 'gray',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
 
 });

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {
-    View, Text, TouchableOpacity, ActivityIndicator,
+    View, Text, TouchableOpacity,
     StyleSheet, TouchableWithoutFeedback, ScrollView, BackHandler, Alert, KeyboardAvoidingView, Keyboard
 } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -25,7 +25,7 @@ import {
     SCLAlert,
     SCLAlertButton
 } from 'react-native-scl-alert'
-
+import { ActivityIndicator, Colors,Surface } from 'react-native-paper';
 
 const LoginValidationSchema = yup.object().shape({
 
@@ -42,9 +42,10 @@ const LoginValidationSchema = yup.object().shape({
 
 const LoginScreen = () => {
 
-    const [showPassword, setShowPassword] = useState(true)
+    const [ showPassword, setShowPassword] = useState(true)
     const [showAlertSuccess, setShowAlertSuccess] = useState(false)
     const [showAlertError, setShowAlertError] = useState(false)
+    const [showLoading, setShowLoading] = useState(false);
     // var app = {
     //     backButtonDialog:"true"
     // };
@@ -179,15 +180,24 @@ const LoginScreen = () => {
         })
     }
     return (
-        <SafeAreaView>
+        <SafeAreaView style={{flex:1}} >
+        {showLoading &&
+   <View style={styles.loading}>
+   <ActivityIndicator animating={true} size={'large'} color={Colors.green900} />
+              </View>
+}
             <Formik
                 initialValues={{ mobilenumber: '', password: '' }}
                 validateOnMount={true}
+
+            
+
                 onSubmit={values => {
                     //login Services for API
+                    setShowLoading(true)
                     axios({
                         method: 'POST',
-                        url: 'http://192.168.10.15:4000/api/users/login',
+                        url: "http://192.168.10.11:5000/api/auth/login",
                         data: {
                             mobile_number: values.mobilenumber,
                             pass: values.password
@@ -198,14 +208,17 @@ const LoginScreen = () => {
                         }
                     })
                         .then(function (response) {
-                            console.log("Response", JSON.stringify(response.data.error))
-                            if (response.data.error) {
+                            setShowLoading(false)
+                            if (response.data.error=="true") {
                                 setShowAlertError(true)
                             } else {
                                 setShowAlertSuccess(true)
+                              const token=response.data.token
+                                console.log(token)
                             }
                         })
                         .catch(function (error) {
+                            setShowLoading(false)
                             console.log("error", error)
                         })
                 }}
@@ -367,6 +380,16 @@ const styles = StyleSheet.create({
         marginLeft: wp('4%'),
         marginBottom: wp('4%'),
         marginTop: wp('-4%'),
+    },loading: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        opacity: 0.5,
+        backgroundColor: 'gray',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
 });
 export default LoginScreen;
