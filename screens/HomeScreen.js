@@ -7,7 +7,7 @@ import { Navigation } from 'react-native-navigation';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { SideMenuView } from "react-native-navigation-drawer-extension";
-
+import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
 import Header from '../components/Header';
 
@@ -20,27 +20,11 @@ const HomeScreen = () => {
 
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
-  
+  const login = useSelector(state => state.login_reducer.isLoggedIn)
 
 
+console.log(login)
 
-   const showDialoge =()=>{
-
-
-
-
-
-
-   }
-  const clearOnboarding = async () => {
-    try {
-
-      await AsyncStorage.removeItem('@viewedOnboarding')
-
-    } catch (err) {
-
-    }
-  }
 
 
   return (

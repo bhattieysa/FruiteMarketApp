@@ -16,15 +16,22 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import * as api from '../apis/api';
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
+import { Button } from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
+import * as AppAction from '../redux/actions/login';
+
 
 const  MyAccountScreen = () => {
-
+  const dispatch=useDispatch()
   const [image, setImage] = useState("");
   const [name, setName] = useState("");
   const [cnic, setCnic] = useState("");
   const [mobile_number, setMobileNumber] = useState("");
 
+  const login = useSelector(state => state.login_reducer.isLoggedIn)
 
+
+console.log(login)
 
    
 
@@ -118,10 +125,17 @@ const  MyAccountScreen = () => {
           </View>
 
 
+
         </View>
 
 
-
+        <View style={styles.logout}>
+        
+          <Button  mode="contained" color='#69A03A' labelStyle={{ color: "white", fontSize: 15,fontWeight:'700' }}  onPress={() =>  dispatch(AppAction.logout())}>
+    Logout
+  </Button>
+         
+          </View>
 
 
 
@@ -160,7 +174,12 @@ const styles = StyleSheet.create({
   innerDetailsView: {
     flexDirection: 'column',
     marginLeft: wp('4%')
-  }
+  },
+  logout:{
+marginLeft:wp('15%'),
+marginRight:wp('15%'),
+
+  },
 
 })
 export default MyAccountScreen

@@ -9,13 +9,13 @@ import NextButton from "./NextButton"
 import SplashScreen from 'react-native-splash-screen'
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import Login from "../screens/LoginScreen"
-
+import { useDispatch, useSelector } from 'react-redux';
 
 
 const OnBoarding = (props) => {
   
   const [viewedOnboarding, setViewedOnBoarding] = useState(false)
-
+  const login = useSelector(state => state.login_reducer.isLoggedIn)
   useEffect(() => {
     SplashScreen.hide()
     checkOnboarding()
@@ -53,6 +53,112 @@ const OnBoarding = (props) => {
 
   const LoginScreen = () => {
     //Navigation.registerComponent('LoginScreen', () => Login);
+
+    
+
+    if(login){
+      Navigation.push('MyStack', {
+        bottomTabs: {
+            children: [
+                {
+                    // TAB 1 
+                    stack: {
+                        children: [
+                            {
+                                component: {
+                                    id: '0',
+                                    name: 'HomeScreen',
+                                    options: {
+                                        bottomTab: {
+                                            text: "Home",
+                                            icon: require('../assets/images/Home.png'),
+                                            selectedTextColor: "#69A03A",
+                                            selectedIconColor: "#69A03A",
+                                        },
+                                    },
+                                },
+                            },
+                        ],
+                    },
+                },
+                {
+                    // TAB 2
+                    stack: {
+                        children: [
+                            {
+                                component: {
+                                    id: '1',
+                                    name: 'CartScreen',
+                                    options: {
+                                        bottomTab: {
+                                            text: "Shopping cart",
+                                            icon: require('../assets/images/Cart.png'),
+                                            selectedTextColor: "#69A03A",
+                                            selectedIconColor: "#69A03A",
+                                        },
+                                    },
+                                },
+                            },
+                        ],
+                    },
+                },
+                {
+                   // TAB 3 
+                    stack: {
+                        children: [
+                            {
+                                component: {
+                                    id: '2',
+                                    name: 'FavScreen',
+                                    options: {
+                                        bottomTab: {
+                                            text: "Favourite",
+                                            icon: require('../assets/images/favrouit.png'),
+                                            selectedTextColor: "#69A03A",
+                                            selectedIconColor: "#69A03A",
+                                        },
+                                    },
+                                },
+                            },
+                        ],
+                    },
+                },
+                {
+                       // TAB 4 
+
+                    stack: {
+                        children: [
+                            {
+
+                                
+
+                                component: {
+                                    id: '3',
+                                    name: 'MyAccountScreen',
+                                    options: {
+                                        bottomTab: {
+                                            text: "My Account",
+                                            icon: require('../assets/images/Account.png'),
+                                            selectedTextColor: "#69A03A",
+                                            selectedIconColor: "#69A03A",
+                                        },
+                                    },
+                                },
+                            },
+                        ],
+                    },
+                },
+            ],
+            options: {
+                bottomTabs: {
+                    titleDisplayMode: 'alwaysShow',
+                },
+            },
+        },
+    })
+
+    }else{
+
     Navigation.push('MyStack', {
       component: {
         name: 'LoginScreen',
@@ -61,6 +167,7 @@ const OnBoarding = (props) => {
 
       }
     })
+  }
   }
 
   const [currentIndex, setCurrentIndex] = useState(0)

@@ -29,6 +29,9 @@ import { ActivityIndicator, Colors,Surface } from 'react-native-paper';
 import * as api from '../apis/api';
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
+import { useDispatch, useSelector } from 'react-redux';
+import * as AppAction from '../redux/actions/login';
+
 const LoginValidationSchema = yup.object().shape({
 
     mobilenumber: yup.string().matches(/^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/, 'Phone number is not valid').required('Mobile Number Is Required'),
@@ -43,11 +46,14 @@ const LoginValidationSchema = yup.object().shape({
 });
 
 const LoginScreen = () => {
-
+    const dispatch=useDispatch()
+    const login = useSelector(state => state.login_reducer.isLoggedIn)
     const [ showPassword, setShowPassword] = useState(true)
     const [showAlertSuccess, setShowAlertSuccess] = useState(false)
     const [showAlertError, setShowAlertError] = useState(false)
     const [showLoading, setShowLoading] = useState(false);
+console.log(login)
+
     // var app = {
     //     backButtonDialog:"true"
     // };
@@ -71,6 +77,7 @@ const LoginScreen = () => {
     // }
 
     const signupButton = () => {
+        
 
         Navigation.push('MyStack', {
             component: {
@@ -81,6 +88,7 @@ const LoginScreen = () => {
     }
     const doneSuccess = () => {
         setShowAlertSuccess(false)
+        dispatch(AppAction.isLoggedin())
         Navigation.push('MyStack', {
             bottomTabs: {
                 children: [
@@ -214,11 +222,13 @@ const LoginScreen = () => {
                             if (response.data.error=="true") {
                                 setShowAlertError(true)
                             } else {
+
                                 setShowAlertSuccess(true)
                               const token=response.data.token
                                 console.log(token)
 
                                  await AsyncStorage.setItem('@token', token)
+                                
 
 
 
