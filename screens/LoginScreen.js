@@ -48,11 +48,13 @@ const LoginValidationSchema = yup.object().shape({
 const LoginScreen = () => {
     const dispatch=useDispatch()
     const login = useSelector(state => state.login_reducer.isLoggedIn)
+    const token = useSelector(state => state.login_reducer.token)
     const [ showPassword, setShowPassword] = useState(true)
     const [showAlertSuccess, setShowAlertSuccess] = useState(false)
     const [showAlertError, setShowAlertError] = useState(false)
     const [showLoading, setShowLoading] = useState(false);
 console.log(login)
+console.log(token)
 
     // var app = {
     //     backButtonDialog:"true"
@@ -225,10 +227,10 @@ console.log(login)
 
                                 setShowAlertSuccess(true)
                               const token=response.data.token
-                                console.log(token)
+                               
 
                                  await AsyncStorage.setItem('@token', token)
-                                
+                                 dispatch(AppAction.token(token))
 
 
 

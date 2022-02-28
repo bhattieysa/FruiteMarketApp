@@ -1,40 +1,63 @@
 import React from 'react'
-import {useState,useEffect,useRef} from "react";
-import { View, Text, TouchableOpacity ,AppState} from 'react-native'
+import { useState, useEffect, useRef } from "react";
+import { View, Text, TouchableOpacity, AppState, StyleSheet } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { Navigation } from 'react-native-navigation';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { SideMenuView } from "react-native-navigation-drawer-extension";
-import { useDispatch, useSelector } from 'react-redux';
+
 import { Button } from 'react-native-elements';
 import Header from '../components/Header';
+import decode from 'jwt-decode';
+import NetInfo from "@react-native-community/netinfo";
+import { useDispatch, useSelector } from 'react-redux';
+import * as AppAction from '../redux/actions/login';
 
-
+import {
+  widthPercentageToDP as wp, heightPercentageToDP as hp, listenOrientationChange as loc,
+  removeOrientationListener as rol
+} from 'react-native-responsive-screen';
+import InternetConnection from '../components/InternetConnection';
 
 
 
 
 const HomeScreen = () => {
-
-  const appState = useRef(AppState.currentState);
-  const [appStateVisible, setAppStateVisible] = useState(appState.current);
+  const dispatch = useDispatch()
   const login = useSelector(state => state.login_reducer.isLoggedIn)
+  const token = useSelector(state => state.login_reducer.token)
 
 
-console.log(login)
+
+
+  //console.log(login)
+  //console.log(token)
+
+
+  useEffect(() => {
+    if (token) {
+      const decodedToken = decode(token)
+      if (decodedToken.exp * 1000 < new Date().getTime()) {
+          dispatch(AppAction.logout()),
+          dispatch(AppAction.token(null))
+      }
+    }
+  })
 
 
 
   return (
 
 
-   
-    <SafeAreaView style={{ flex: 1 }}>
-       
-    <Header/>
 
+    <SafeAreaView style={{ flex: 1 }}>
+
+      <Header />
+
+
+      <InternetConnection />
 
       <View style={{ flex: 1 }}>
 
@@ -45,7 +68,7 @@ console.log(login)
 
       </View>
     </SafeAreaView>
-  
+
   )
 }
 
@@ -56,6 +79,10 @@ console.log(login)
 //     animate: true,
 //   }
 // });
+const styles = StyleSheet.create({
 
+
+
+})
 
 export default HomeScreen

@@ -1,7 +1,8 @@
-import {IS_LOGGEDIN,LOGOUT} from '../actions/types'
+import {IS_LOGGEDIN,LOGOUT, TOKEN} from '../actions/types'
 
 const initialState={
-    isLoggedIn: false
+    isLoggedIn: false,
+    token:null
 }
 const login_reducer= (state = initialState, action)=>{
 
@@ -16,6 +17,12 @@ const login_reducer= (state = initialState, action)=>{
             return { 
                 ...state,
                 isLoggedIn: false
+
+            }
+        case TOKEN:
+            return { 
+                ...state,
+                token: action.data
 
             }
         default:

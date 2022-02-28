@@ -10,7 +10,7 @@ import {
   widthPercentageToDP as wp, heightPercentageToDP as hp, listenOrientationChange as loc,
   removeOrientationListener as rol
 } from 'react-native-responsive-screen';
-import { Avatar, ActivityIndicator } from 'react-native-paper';
+import { Avatar } from 'react-native-paper';
 import Fontisto from 'react-native-vector-icons/Fontisto'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import * as api from '../apis/api';
@@ -19,63 +19,61 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import { Button } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import * as AppAction from '../redux/actions/login';
+import { ActivityIndicator, Colors, Surface } from 'react-native-paper';
+import InternetConnection from '../components/InternetConnection';
+//import jsonwebtoken from 'jsonwebtoken';
 
 
-const  MyAccountScreen = () => {
-  const dispatch=useDispatch()
+const MyAccountScreen = () => {
+  const dispatch = useDispatch()
   const [image, setImage] = useState("");
   const [name, setName] = useState("");
   const [cnic, setCnic] = useState("");
   const [mobile_number, setMobileNumber] = useState("");
+  const [showLoading, setShowLoading] = useState(true);
 
-  const login = useSelector(state => state.login_reducer.isLoggedIn)
-
-
-console.log(login)
-
-   
-
-    // if (value !== null) {
-    //   setViewedOnBoarding(true)
-    // }
+  const token = useSelector(state => state.login_reducer.token)
 
 
-  // run when bottom tab press
-  Navigation.events().registerBottomTabSelectedListener(async(selectedTabIndex, unselectedTabIndex) => {
-    const token = await AsyncStorage.getItem('@token')
-    axios({
-      method: 'POST',
-      url: api.MYACCOUNT_URL,
-      data: {
-        mobile_number: '03069603634',
 
-      },
-      responseType: 'json',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'authorization':token
-      }
+
+
+  axios({
+
+    method: 'POST',
+    url: api.MYACCOUNT_URL,
+    data: {
+      mobile_number: '03069603634',
+
+
+    },
+
+    responseType: 'json',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'authorization': token
+    }
+  })
+    .then(function (response) {
+      setShowLoading(false)
+      //console.log(response.data)
+
+
+      setImage(response.data.image_url)
+      setName(response.data.name)
+      setCnic(response.data.cnic)
+      setMobileNumber(response.data.mobile_number)
+
+
+
     })
-      .then(function (response) {
+    .catch(function (error) {
+      setShowLoading(false)
+      console.log("error", error)
+    })
 
-        //console.log(response.data)
 
-
-        setImage(response.data.image_url)
-        setName(response.data.name)
-        setCnic(response.data.cnic)
-        setMobileNumber(response.data.mobile_number)
-
-       
-      
-      })
-      .catch(function (error) {
-
-        console.log("error", error)
-      })
-
-  });
 
 
 
@@ -86,13 +84,20 @@ console.log(login)
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+     
+      {showLoading &&
+        <View style={styles.loading}>
+          <ActivityIndicator animating={true} size={'large'} color={Colors.green900} />
+        </View>
+      }
       <Header />
+      <InternetConnection />
       <View style={{ flex: 1 }}>
 
         <View style={styles.imageView}>
           <Avatar.Image
             size={wp('30%')}
-            source={{uri:api.VIEWIMAGE_URL+image}}
+            source={{ uri: api.VIEWIMAGE_URL + image }}
             // containerStyle={styles.item}
             style={{ marginBottom: wp('10%') }}
             PlaceholderContent={<ActivityIndicator />}
@@ -130,12 +135,17 @@ console.log(login)
 
 
         <View style={styles.logout}>
-        
-          <Button  mode="contained" color='#69A03A' labelStyle={{ color: "white", fontSize: 15,fontWeight:'700' }}  onPress={() =>  dispatch(AppAction.logout())}>
-    Logout
-  </Button>
-         
-          </View>
+
+          <Button mode="contained" color='#69A03A' labelStyle={{ color: "white", fontSize: 15, fontWeight: '700' }}
+            onPress={() => {
+              dispatch(AppAction.logout()),
+                dispatch(AppAction.token(null))
+            }
+            }>
+            Logout
+          </Button>
+
+        </View>
 
 
 
@@ -161,24 +171,37 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: wp('5%'),
 
-    backgroundColor: '#69A03A'
+   
   }, accountView: {
     flexDirection: 'column',
-    margin: wp('10%')
+    marginRight: wp('10%'),
+    marginLeft: wp('10%'),
+    marginBottom: wp('10%')
   }, detailsView: {
 
     marginLeft: wp('3%'),
     marginTop: wp('8%'),
+
     flexDirection: 'row'
   },
   innerDetailsView: {
     flexDirection: 'column',
     marginLeft: wp('4%')
   },
-  logout:{
-marginLeft:wp('15%'),
-marginRight:wp('15%'),
+  logout: {
+    marginLeft: wp('15%'),
+    marginRight: wp('15%'),
 
+  }, loading: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    opacity: 0.5,
+    backgroundColor: 'gray',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
 
 })

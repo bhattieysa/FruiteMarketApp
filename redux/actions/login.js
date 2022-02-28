@@ -1,4 +1,4 @@
-import { IS_LOGGEDIN,LOGOUT } from "./types";
+import { IS_LOGGEDIN,LOGOUT,TOKEN } from "./types";
 
 export const isLoggedin=()=>(
 {
@@ -16,3 +16,14 @@ export const logout=()=>(
     
     
     )
+  
+
+export const token=(token)=>(
+{
+    type: TOKEN,
+    data:token
+  
+}
+
+
+)

@@ -2162,6 +2162,11 @@
   resolved "https://registry.npmjs.org/@react-native-community/eslint-plugin/-/eslint-plugin-1.1.0.tgz"
   integrity sha512-W/J0fNYVO01tioHjvYWQ9m6RgndVtbElzYozBq1ZPrHO/iCzlqoySHl4gO/fpCl9QEFjvJfjPgtPMTMlsoq5DQ==
 
+"@react-native-community/netinfo@^5.5.1":
+  version "5.9.10"
+  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-5.9.10.tgz#97d3a9fa62a3a4838ec7a6ec91cfec5a26e365b6"
+  integrity sha512-1NPlBA2Hu/KWc3EnQcDRPRX0x8Dg9tuQlQQVWVQjlg+u+PjCq7ANEtbikOFKp5yQqfF8tqzU5+84/IfDO8zpiA==
+
 "@react-native-community/netinfo@^8.0.0":
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-8.0.0.tgz#7be288c8226ce14ba61e10c6dbd63ef4a56b6ee9"
@@ -7986,7 +7991,7 @@ jsonify@~0.0.0:
   resolved "https://registry.npmjs.org/jsonify/-/jsonify-0.0.0.tgz"
   integrity sha1-LHS27kHZPKUbe1qu6PUDYx0lKnM=
 
-jsonwebtoken@^8.3.0:
+jsonwebtoken@^8.3.0, jsonwebtoken@^8.5.1:
   version "8.5.1"
   resolved "https://registry.yarnpkg.com/jsonwebtoken/-/jsonwebtoken-8.5.1.tgz#00e71e0b8df54c2121a1f26137df2280673bcc0d"
   integrity sha512-XjwVfRS6jTMsqYs0EsuJ4LGxXV14zQybNd4L2r0UvbVnSF9Af8x7p5MzbJ90Ioz/9TI41/hTCvznF/loiSzn8w==
@@ -8036,6 +8041,11 @@ jws@^3.2.2:
   dependencies:
     jwa "^1.4.1"
     safe-buffer "^5.0.1"
+
+jwt-decode@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/jwt-decode/-/jwt-decode-3.1.2.tgz#3fb319f3675a2df0c2895c8f5e9fa4b67b04ed59"
+  integrity sha512-UfpWE/VZn0iP50d8cz9NrZLM9lSWhcJ+0Gt/nm4by88UL+J1SiKN8/5dkjMmbEzwL2CAe+67GsegCbIKtbp75A==
 
 keyv@^3.0.0:
   version "3.1.0"
@@ -9997,6 +10007,15 @@ react-native-navigation@^7.22.3:
     prop-types "15.x.x"
     react-lifecycles-compat "2.0.0"
     tslib "1.9.3"
+
+react-native-no-internet-screen@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/react-native-no-internet-screen/-/react-native-no-internet-screen-1.0.4.tgz#4d641fabc9f42dc0fa6634e87f3c21fc82cb490c"
+  integrity sha512-4pfhWjaIgq2IM6RoymZHDF+UDK+Q8WGYdSmHZt/MWbATE7ihmIhgeReJ9b8S9/Tkpfd6hca3zzw3ilQb56yC/Q==
+  dependencies:
+    "@react-native-community/netinfo" "^5.5.1"
+    lodash "^4.17.11"
+    prop-types "^15.6.2"
 
 react-native-offline@^6.0.0:
   version "6.0.0"
