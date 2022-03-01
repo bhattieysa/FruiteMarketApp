@@ -5,7 +5,6 @@ import { Navigation } from 'react-native-navigation';
 import OnBoardingItem from "./OnBoardingItems"
 import Paginator from "../components/Paginator"
 import NextButton from "./NextButton"
-
 import SplashScreen from 'react-native-splash-screen'
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import Login from "../screens/LoginScreen"
@@ -22,9 +21,6 @@ const OnBoarding = (props) => {
     if (viewedOnboarding) {
       LoginScreen()
     }
-
-
-
   })
 
   const checkOnboarding = async () => {
@@ -152,6 +148,7 @@ const OnBoarding = (props) => {
             options: {
                 bottomTabs: {
                     titleDisplayMode: 'alwaysShow',
+                   
                 },
             },
         },

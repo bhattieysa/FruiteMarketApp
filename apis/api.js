@@ -1,4 +1,4 @@
-export const BASE_URL = "http://192.168.1.8:5000/"
+export const BASE_URL = "http://192.168.1.4:5000/"
 
 
 
@@ -8,6 +8,8 @@ export const SIGNUP_URL = BASE_URL+'api/auth/signup';
 
 //user
 export const MYACCOUNT_URL = BASE_URL+'api/user/myaccount';
+export const EDITACCOUNT_URL = BASE_URL+'api/user/editaccount';
+
 
 
 //image

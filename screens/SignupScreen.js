@@ -23,7 +23,7 @@ LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs();//Ignore all log notifications
 import { ActivityIndicator, Colors,Surface } from 'react-native-paper';
 import * as api from '../apis/api';
-
+import Toast from 'react-native-root-toast'
 
 
 const SignupValidationSchema = yup.object().shape({
@@ -98,7 +98,13 @@ const SignupScreen = () => {
                             console.log("Response", JSON.stringify(response.data.error))
                             if (response.data.error == "true") {
                                     setShowLoading(false)
-                                setShowAlertError(true)
+                                    Toast.show('Something Wrong', {
+                                        duration: Toast.durations.SHORT,
+                                        position: Toast.positions.BOTTOM,
+                                        shadow: true,
+                                        animation: true,
+                                        hideOnPress: true,
+                                    });
                             } else {
                                 axios({
                                     method: 'POST',
@@ -113,12 +119,26 @@ const SignupScreen = () => {
                                        
                                         setShowLoading(false)
                                         if (response.data.error != "true") {
-                                            setShowAlertSuccess(true)
+                                            Toast.show('Signup Successful', {
+                                                duration: Toast.durations.SHORT,
+                                                position: Toast.positions.BOTTOM,
+                                                shadow: true,
+                                                animation: true,
+                                                hideOnPress: true,
+                                            });
                                            
                                         }
                                     })
                                     .catch(function (error) {
                                         console.log("error", error)
+                                        setShowLoading(false)
+                                        Toast.show('Internet Error', {
+                                            duration: Toast.durations.SHORT,
+                                            position: Toast.positions.BOTTOM,
+                                            shadow: true,
+                                            animation: true,
+                                            hideOnPress: true,
+                                        });
                                     })
 
                             }
@@ -147,30 +167,8 @@ const SignupScreen = () => {
 
                                 <View style={styles.imageContainer}>
 
-                                    <SCLAlert
-                                        show={showAlertSuccess}
-                                        onRequestClose={() => { setShowAlertSuccess(false) }}
-                                        theme="success"
-                                        title="Congratulations"
-                                        useNativeDriver={true}
-                                        subtitle="Signup Successfull"
-                                        headerIconComponent={<Ionicons name="check" size={32} color="white" />}
-                                    >
-                                        <SCLAlertButton theme="success" onPress={() => { setShowAlertSuccess(false) }}>Done</SCLAlertButton>
 
-                                    </SCLAlert>
-                                    <SCLAlert
-                                        show={showAlertError}
-                                        onRequestClose={() => { setShowAlertSuccess(false) }}
-                                        theme="danger"
-                                        title="Error"
-                                        useNativeDriver={true}
-                                        subtitle="User Already Exist"
-                                        headerIconComponent={<Ionicons name="trash" size={28} color="white" />}
-                                    >
-                                        <SCLAlertButton theme="danger" onPress={() => { setShowAlertError(false) }}>Done</SCLAlertButton>
-
-                                    </SCLAlert>
+                                
                                     <Image
                                         source={require('../assets/images/LoginPage.png')}
                                         style={{ width: wp('45%'), height: hp('25%') }}

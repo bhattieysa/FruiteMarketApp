@@ -14,7 +14,7 @@ const InternetConnection = () => {
     checkInternet=()=>{
         NetInfo.addEventListener(state => {
          // console.log("Connection type", state.type);
-          console.log("Is connecteddd?", state.isConnected);
+        
     
     if(state.isConnected==true){
       setConnected(true)

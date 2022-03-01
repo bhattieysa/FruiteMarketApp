@@ -20,7 +20,7 @@ import {
   removeOrientationListener as rol
 } from 'react-native-responsive-screen';
 import InternetConnection from '../components/InternetConnection';
-
+import Toast from 'react-native-root-toast'
 
 
 

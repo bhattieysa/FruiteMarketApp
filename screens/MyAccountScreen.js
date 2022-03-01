@@ -29,15 +29,18 @@ const MyAccountScreen = () => {
   const [image, setImage] = useState("");
   const [name, setName] = useState("");
   const [cnic, setCnic] = useState("");
+  const [pass, setPass] = useState("");
+  const [user_id, setUserId] = useState("");
   const [mobile_number, setMobileNumber] = useState("");
   const [showLoading, setShowLoading] = useState(true);
 
+
   const token = useSelector(state => state.login_reducer.token)
 
+  Navigation.events().registerBottomTabSelectedListener((selectedTabIndex, unselectedTabIndex) => {
 
 
-
-
+if(selectedTabIndex.selectedTabIndex==3){
   axios({
 
     method: 'POST',
@@ -58,12 +61,14 @@ const MyAccountScreen = () => {
     .then(function (response) {
       setShowLoading(false)
       //console.log(response.data)
-
+     
 
       setImage(response.data.image_url)
       setName(response.data.name)
       setCnic(response.data.cnic)
       setMobileNumber(response.data.mobile_number)
+      setPass(response.data.pass)
+      setUserId(response.data.id)
 
 
 
@@ -73,9 +78,9 @@ const MyAccountScreen = () => {
       console.log("error", error)
     })
 
+  }
 
-
-
+  })
 
 
 
@@ -84,7 +89,7 @@ const MyAccountScreen = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-     
+
       {showLoading &&
         <View style={styles.loading}>
           <ActivityIndicator animating={true} size={'large'} color={Colors.green900} />
@@ -106,6 +111,7 @@ const MyAccountScreen = () => {
         <View style={styles.accountView}>
 
           <Text style={{ fontSize: 25, fontWeight: '700' }}>Account Info</Text>
+
 
           <View style={styles.detailsView}>
             <Fontisto name="person" size={wp('7%')} />
@@ -144,6 +150,23 @@ const MyAccountScreen = () => {
             }>
             Logout
           </Button>
+          <Text style={styles.editAccount} onPress={() => {
+
+            Navigation.push('MyStack', {
+              component: {
+                name: 'EditAccountScreen',
+                passProps:{
+                  name:name,
+                  cnic:cnic,
+                  number:mobile_number,
+                  pass:pass,
+                  id:user_id
+
+                }
+
+              }
+            })
+          }}> Edit Account Info</Text>
 
         </View>
 
@@ -171,7 +194,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: wp('5%'),
 
-   
+
   }, accountView: {
     flexDirection: 'column',
     marginRight: wp('10%'),
@@ -202,6 +225,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'gray',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  editAccount: {
+    textAlign: 'center',
+    margin: wp('3%'),
+    fontSize: 15,
+    fontWeight: '500',
+    color: 'red'
   },
 
 })

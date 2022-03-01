@@ -9,6 +9,7 @@ import SignupScreen from '../screens/SignupScreen';
 import CartScreen from '../screens/CartScreen';
 import FavScreen from '../screens/FavScreen';
 import MyAccountScreen from '../screens/MyAccountScreen';
+import EditAccountScreen from "../screens/EditAccountScreen";
 import { RNNDrawer } from "react-native-navigation-drawer-extension";
 import CustomDrawer from "../components/CustomDrawer"
 import { Provider } from 'react-redux'
@@ -68,7 +69,12 @@ export const registerScreens = (store,persistor) => {
     () => withNavigationProvider(WrapScreen(MyAccountScreen, store,persistor)),
     () => MyAccountScreen,
   );
-
+  Navigation.registerComponent(
+    'EditAccountScreen',
+    () => withNavigationProvider(WrapScreen(EditAccountScreen, store,persistor)),
+    () => EditAccountScreen,
+  );
+  
 
 
 
@@ -127,6 +133,26 @@ MyAccountScreen.options = {
     dismissModalOnPress: false,
     popStackOnPress: false,
   }, popGesture: false
+}
+EditAccountScreen.options = {
+  topBar: {
+    background: {
+      color: '#69A03A',
+    },
+    title: {
+      text: `Edit Account Info`,
+      color:'white',
+      fontWeight:'700',
+      fontSize:20
+      
+    },
+    backButton: {
+      color:'white'
+    },
+    statusBar: {
+      backgroundColor:'#69A03A'
+    },
+  }
 }
 
 

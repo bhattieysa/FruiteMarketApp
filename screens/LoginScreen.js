@@ -25,12 +25,13 @@ import {
     SCLAlert,
     SCLAlertButton
 } from 'react-native-scl-alert'
-import { ActivityIndicator, Colors,Surface } from 'react-native-paper';
+import { ActivityIndicator, Colors, Surface } from 'react-native-paper';
 import * as api from '../apis/api';
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
 import { useDispatch, useSelector } from 'react-redux';
 import * as AppAction from '../redux/actions/login';
+import Toast from 'react-native-root-toast'
 
 const LoginValidationSchema = yup.object().shape({
 
@@ -46,15 +47,13 @@ const LoginValidationSchema = yup.object().shape({
 });
 
 const LoginScreen = () => {
-    const dispatch=useDispatch()
+    const dispatch = useDispatch()
     const login = useSelector(state => state.login_reducer.isLoggedIn)
     const token = useSelector(state => state.login_reducer.token)
-    const [ showPassword, setShowPassword] = useState(true)
+    const [showPassword, setShowPassword] = useState(true)
     const [showAlertSuccess, setShowAlertSuccess] = useState(false)
     const [showAlertError, setShowAlertError] = useState(false)
     const [showLoading, setShowLoading] = useState(false);
-console.log(login)
-console.log(token)
 
     // var app = {
     //     backButtonDialog:"true"
@@ -79,7 +78,7 @@ console.log(token)
     // }
 
     const signupButton = () => {
-        
+
 
         Navigation.push('MyStack', {
             component: {
@@ -89,8 +88,8 @@ console.log(token)
         })
     }
     const doneSuccess = () => {
-        setShowAlertSuccess(false)
-        dispatch(AppAction.isLoggedin())
+       
+       
         Navigation.push('MyStack', {
             bottomTabs: {
                 children: [
@@ -137,7 +136,7 @@ console.log(token)
                         },
                     },
                     {
-                       // TAB 3 
+                        // TAB 3 
                         stack: {
                             children: [
                                 {
@@ -158,13 +157,13 @@ console.log(token)
                         },
                     },
                     {
-                           // TAB 4 
+                        // TAB 4 
 
                         stack: {
                             children: [
                                 {
 
-                                    
+
 
                                     component: {
                                         id: '3',
@@ -192,17 +191,17 @@ console.log(token)
         })
     }
     return (
-        <SafeAreaView style={{flex:1}} >
-        {showLoading &&
-   <View style={styles.loading}>
-   <ActivityIndicator animating={true} size={'large'} color={Colors.green900} />
-              </View>
-}
+        <SafeAreaView style={{ flex: 1 }} >
+            {showLoading &&
+                <View style={styles.loading}>
+                    <ActivityIndicator animating={true} size={'large'} color={Colors.green900} />
+                </View>
+            }
             <Formik
                 initialValues={{ mobilenumber: '', password: '' }}
                 validateOnMount={true}
 
-            
+
 
                 onSubmit={async values => {
                     //login Services for API
@@ -219,19 +218,29 @@ console.log(token)
                             'Content-Type': 'application/json'
                         }
                     })
-                        .then (async function  (response) {
+                        .then(async function (response) {
                             setShowLoading(false)
-                            if (response.data.error=="true") {
-                                setShowAlertError(true)
+                            if (response.data.error == "true") {
+                                Toast.show('Login Failed : Incorect Mobile Number of Password', {
+                                    duration: Toast.durations.SHORT,
+                                    position: Toast.positions.BOTTOM,
+                                    shadow: true,
+                                    animation: true,
+                                    hideOnPress: true,
+                                });
                             } else {
 
-                                setShowAlertSuccess(true)
-                              const token=response.data.token
-                               
-
-                                 await AsyncStorage.setItem('@token', token)
-                                 dispatch(AppAction.token(token))
-
+                                Toast.show('Login Successful', {
+                                    duration: Toast.durations.SHORT,
+                                    position: Toast.positions.BOTTOM,
+                                    shadow: true,
+                                    animation: true,
+                                    hideOnPress: true,
+                                });
+                                doneSuccess()
+                                const token = response.data.token
+                                dispatch(AppAction.token(token))
+                                dispatch(AppAction.isLoggedin())
 
 
                             }
@@ -239,6 +248,13 @@ console.log(token)
                         .catch(function (error) {
                             setShowLoading(false)
                             console.log("error", error)
+                            Toast.show('Internet Error...!', {
+                                duration: Toast.durations.SHORT,
+                                position: Toast.positions.BOTTOM,
+                                shadow: true,
+                                animation: true,
+                                hideOnPress: true,
+                            });
                         })
                 }}
                 validationSchema={LoginValidationSchema}
@@ -247,28 +263,6 @@ console.log(token)
                     <KeyboardAwareScrollView  >
                         <View style={styles.wrapper}>
                             <View style={styles.imageContainer}>
-                                <SCLAlert
-                                    show={showAlertSuccess}
-                                    onRequestClose={() => { setShowAlertSuccess(false) }}
-                                    theme="success"
-                                    title="Congratulations"
-                                    useNativeDriver={true}
-                                    subtitle="Login Successfull"
-                                    headerIconComponent={<Ionicons name="check" size={32} color="white" />}
-                                >
-                                    <SCLAlertButton theme="success" onPress={() => doneSuccess()}>Done</SCLAlertButton>
-                                </SCLAlert>
-                                <SCLAlert
-                                    show={showAlertError}
-                                    onRequestClose={() => { setShowAlertError(false) }}
-                                    theme="danger"
-                                    title="Error"
-                                    useNativeDriver={true}
-                                    subtitle="Login Failed"
-                                    headerIconComponent={<Ionicons name="trash" size={28} color="white" />}
-                                >
-                                    <SCLAlertButton theme="danger" onPress={() => { setShowAlertError(false) }}>Done</SCLAlertButton>
-                                </SCLAlert>
                                 <Image
                                     source={require('../assets/images/LoginPage.png')}
                                     style={{ width: wp('55%'), height: hp('35%') }}
@@ -289,7 +283,7 @@ console.log(token)
                                         leftIcon={{ type: 'font-awesome', name: 'phone', size: 20, paddingRight: 20 }}
                                         rightIcon={{ type: 'entypo', name: (!errors.mobilenumber ? 'check' : 'cross'), color: !errors.mobilenumber ? 'green' : 'red', size: 20, }}
                                     />
-                                    
+
                                 </View>
                                 {(errors.mobilenumber && touched.mobilenumber) &&
                                     <Text style={styles.errors}>{errors.mobilenumber}</Text>
@@ -399,7 +393,7 @@ const styles = StyleSheet.create({
         marginLeft: wp('4%'),
         marginBottom: wp('4%'),
         marginTop: wp('-4%'),
-    },loading: {
+    }, loading: {
         position: 'absolute',
         left: 0,
         right: 0,
