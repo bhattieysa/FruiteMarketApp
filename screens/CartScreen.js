@@ -39,7 +39,7 @@ const CartScreen = () => {
 
 
 
-    
+ 
     
 
 
@@ -64,7 +64,7 @@ var price=0;
 
             
             <View style={styles.fruiteCategoryView}>
-              <Text style={styles.fruiteCategoryName}>{item.category_id}</Text>
+              <Text style={styles.fruiteCategoryName}>{item.category_name}</Text>
             </View>
 
             {/* <CartFruiteList id={item.category_id} sendDataToParent={sendDataToParent} /> */}
@@ -137,6 +137,11 @@ const styles = StyleSheet.create({
     marginLeft: wp('3%'),
 
 
+  },
+  fruiteCategoryName:{
+
+    fontSize:20,
+    fontWeight:'700'
   },
 
 

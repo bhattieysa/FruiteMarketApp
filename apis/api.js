@@ -1,4 +1,4 @@
-export const BASE_URL = "http://192.168.10.11:5000/"
+export const BASE_URL = "http://192.168.10.5:5000/"
 
 
 
@@ -21,6 +21,8 @@ export const VIEWIMAGE_URL = BASE_URL+'image?image_url=';
 export const HOME_FRUITE_CATEGORIES_URL = BASE_URL+'api/home/categories';
 export const HOME_FRUITES_URL = BASE_URL+'api/home/fruits';
 export const HOME_LIKE_FRUITES_URL = BASE_URL+'api/home/like_fruite';
+export const HOME_UNLIKE_FRUITES_URL = BASE_URL+'api/home/unlike_fruite';
+
 export const HOME_NUTRITION_FRUITES_URL = BASE_URL+'api/home/nutrition_fruite';
 export const HOME_ADDTOCART_FRUITES_URL = BASE_URL+'api/home/addtocart';
 

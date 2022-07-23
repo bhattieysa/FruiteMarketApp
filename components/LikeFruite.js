@@ -32,7 +32,7 @@ const LikeFruite = ({fruite_id,like}) => {
 
     
 
-    function LikeButtonPress(user_id,fruite_id){
+    function LikeButtonAddTrue(user_id,fruite_id){
        
 
 
@@ -83,6 +83,57 @@ const LikeFruite = ({fruite_id,like}) => {
 
 
     }
+    function LikeButtonAddFalse(user_id,fruite_id){
+       
+
+
+        axios({
+
+            method: 'POST',
+            url: api.HOME_UNLIKE_FRUITES_URL,
+
+            data: {
+                user_id: user_id,
+                fruite_id: fruite_id
+
+
+            },
+            responseType: 'json',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'authorization': token
+            }
+        })
+            .then(function (response) {
+
+               
+                
+                    // Toast.show(response.data.message, {
+                    //     duration: Toast.durations.LONG,
+                    //     position: Toast.positions.BOTTOM,
+                    //     shadow: true,
+                    //     animation: true,
+                    //     hideOnPress: true,
+                    // });
+                    if (Platform.OS === 'android') {
+                        ToastAndroid.show(response.data.message, ToastAndroid.SHORT)
+                      } else {
+                        Alert.alert(response.data.message);
+                      }
+
+
+
+            })
+            .catch(function (error) {
+
+                console.log("error5", error)
+            })
+
+
+
+
+    }
 
 
     return (
@@ -90,7 +141,7 @@ const LikeFruite = ({fruite_id,like}) => {
         <View style={styles.likeBg}>
 
             {like ? (
-                <TouchableOpacity activeOpacity={.5} onPress={()=>LikeButtonPress(userId,fruite_id )}>
+                <TouchableOpacity activeOpacity={.5} onPress={()=>LikeButtonAddFalse(userId,fruite_id )}>
                     <Image
 
                         source={require('../assets/images/heart.png')}
@@ -102,7 +153,7 @@ const LikeFruite = ({fruite_id,like}) => {
                 </TouchableOpacity>
             ) : (
 
-                <TouchableOpacity activeOpacity={.5} onPress={()=>LikeButtonPress(userId, fruite_id)}>
+                <TouchableOpacity activeOpacity={.5} onPress={()=>LikeButtonAddTrue(userId, fruite_id)}>
                     <Image
 
                         source={require('../assets/images/half_heart.png')}
