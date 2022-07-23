@@ -36,6 +36,15 @@ const MyAccountScreen = () => {
 
 
   const token = useSelector(state => state.login_reducer.token)
+  const clearOnboarding = async () => {
+    try {
+
+      await AsyncStorage.removeItem('@viewedOnboarding')
+
+    } catch (err) {
+
+    }
+  }
 
   Navigation.events().registerBottomTabSelectedListener((selectedTabIndex, unselectedTabIndex) => {
 
@@ -144,6 +153,7 @@ if(selectedTabIndex.selectedTabIndex==3){
 
           <Button mode="contained" color='#69A03A' labelStyle={{ color: "white", fontSize: 15, fontWeight: '700' }}
             onPress={() => {
+              clearOnboarding()
               dispatch(AppAction.logout()),
                 dispatch(AppAction.token(null))
             }

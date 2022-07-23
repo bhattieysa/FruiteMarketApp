@@ -1,8 +1,9 @@
-import {IS_LOGGEDIN,LOGOUT, TOKEN} from '../actions/types'
+import {IS_LOGGEDIN,LOGOUT, TOKEN,USER_ID,ADDTOCART,DELETEFROMCART} from '../actions/types'
 
 const initialState={
     isLoggedIn: false,
-    token:null
+    token:null,
+    cart:[]
 }
 const login_reducer= (state = initialState, action)=>{
 
@@ -25,6 +26,24 @@ const login_reducer= (state = initialState, action)=>{
                 token: action.data
 
             }
+            case USER_ID:
+                return { 
+                    ...state,
+                    userId: action.data
+                }
+                case ADDTOCART:
+                    return { 
+                        ...state,
+                        cart: [...state.cart,  action.data]
+        
+                    }
+                    case DELETEFROMCART:
+                        return { 
+                            ...state,
+                            cart: action.data
+            
+                        }
+            
         default:
             return state
     }

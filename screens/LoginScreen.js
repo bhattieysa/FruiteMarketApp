@@ -90,7 +90,7 @@ const LoginScreen = () => {
     const doneSuccess = () => {
        
        
-        Navigation.push('MyStack', {
+        Navigation.push('MyStack1', {
             bottomTabs: {
                 children: [
                     {
@@ -107,6 +107,7 @@ const LoginScreen = () => {
                                                 icon: require('../assets/images/Home.png'),
                                                 selectedTextColor: "#69A03A",
                                                 selectedIconColor: "#69A03A",
+                                             
                                             },
                                         },
                                     },
@@ -239,7 +240,11 @@ const LoginScreen = () => {
                                 });
                                 doneSuccess()
                                 const token = response.data.token
+                                const userId = response.data.userId
+                               
+                              
                                 dispatch(AppAction.token(token))
+                                dispatch(AppAction.userId(userId))
                                 dispatch(AppAction.isLoggedin())
 
 

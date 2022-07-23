@@ -16,6 +16,8 @@ import { Provider } from 'react-redux'
 import reduxStore from './store'
 import { withNavigationProvider, NavigationProvider } from 'react-native-navigation-hooks'
 import { PersistGate } from 'redux-persist/integration/react'
+import FruiteScreen from "../screens/FruitsScreen";
+import PaymentScreen from "../screens/PaymentScreen";
 
 
 
@@ -74,6 +76,16 @@ export const registerScreens = (store,persistor) => {
     () => withNavigationProvider(WrapScreen(EditAccountScreen, store,persistor)),
     () => EditAccountScreen,
   );
+  Navigation.registerComponent(
+    'FruiteScreen',
+    () => withNavigationProvider(WrapScreen(FruiteScreen, store,persistor)),
+    () => FruiteScreen,
+  );
+  Navigation.registerComponent(
+    'PaymentScreen',
+    () => withNavigationProvider(WrapScreen(PaymentScreen, store,persistor)),
+    () => PaymentScreen,
+  );
   
 
 
@@ -109,6 +121,7 @@ SignupScreen.options = {
     visible: false
   },
 }
+
 
 CartScreen.options = {
   topBar: {
@@ -154,5 +167,47 @@ EditAccountScreen.options = {
     },
   }
 }
+FruiteScreen.options = {
+  topBar: {
+    background: {
+      color: '#69A03A',
+    },
+    title: {
+      text: `Fruite Details`,
+      color:'white',
+      fontWeight:'700',
+      fontSize:20
+      
+    },
+    backButton: {
+      color:'white'
+    },
+    statusBar: {
+      backgroundColor:'#69A03A'
+    },
+  }
+}
+PaymentScreen.options = {
+  topBar: {
+    background: {
+      color: '#69A03A',
+    },
+    title: {
+      text: `Payment`,
+      color:'white',
+      fontWeight:'700',
+      fontSize:20
+      
+    },
+    backButton: {
+      color:'white'
+    },
+    statusBar: {
+      backgroundColor:'#69A03A'
+    },
+  }
+}
+
+
 
 
