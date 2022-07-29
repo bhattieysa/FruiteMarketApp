@@ -25,6 +25,7 @@ const FavScreen = () => {
   const token = useSelector(state => state.login_reducer.token)
   const [API_DATA, setAPI_DATA] = useState('');
   const cart = useSelector(state => state.login_reducer.cart)
+  
 
 //   Navigation.events().registerBottomTabSelectedListener((selectedTabIndex, unselectedTabIndex) => {
 
@@ -111,6 +112,12 @@ const FavScreen = () => {
 
   //       }
 
+
+  // useEffect(()=>{
+
+   
+  
+  // },[])
   axios({
 
     method: 'POST',
@@ -131,18 +138,20 @@ const FavScreen = () => {
   })
     .then(function (response) {
 
+// remove objects
+   //   const result = Object.keys(response.data).map(key => ( response.data[key]));
 
-      const result = Object.keys(response.data).map(key => ( response.data[key]));
+      setAPI_DATA(response.data)
 
-      setAPI_DATA(result)
-      console.log("fav",response.data)
-    
+    console.log("test",response.data)
 
     })
     .catch(function (error) {
 
       console.log("error", error)
     })
+
+  
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Header />
@@ -150,13 +159,13 @@ const FavScreen = () => {
       <View style={{ flex: 1 }}>
         <FlatList
           data={API_DATA}
-          keyExtractor={item => item[0].id}
+          keyExtractor={item => item.id}
           renderItem={({ item }) =>
 
 
             <View style={styles.fruiteView}>
               <Image
-                source={{ uri: item[0].image }}
+                source={{ uri: item.image }}
                 style={styles.fruiteImage}
 
                 imageStyle={{ borderRadius: 10 }}
@@ -166,8 +175,8 @@ const FavScreen = () => {
               />
               <View style={styles.nameView}>
 
-                <Text style={styles.fruiteTitle}> {item[0].name} </Text>
-                <Text style={styles.fruiteCategory}>{item[0].category_name}</Text>
+                <Text style={styles.fruiteTitle}> {item.name} </Text>
+                <Text style={styles.fruiteCategory}>{item.category_name}</Text>
 
                 <Rating
                   type='star'
@@ -175,7 +184,7 @@ const FavScreen = () => {
                   onFinishRating={(rating) => { console.log(rating) }}
                   style={styles.rattings}
                   ratingCount={5}
-                  startingValue={item[0].ratings}
+                  startingValue={item.ratings}
                   imageSize={16}
                   readonly
 
@@ -186,17 +195,17 @@ const FavScreen = () => {
 
               </View>
               <View style={styles.nameView}>
-                <Text style={styles.fruitePrice}> {item[0].price}Rs {item[0].unit}  </Text>
+                <Text style={styles.fruitePrice}> {item.price}Rs {item.unit}  </Text>
                 <Button mode="contained" color='#CC7D00' labelStyle={{ color: "white", fontSize: 10, fontWeight: '600' }}
                   // disabled={!isValid}
                   // onPress={handleSubmit}
                   style={{ alignSelf: 'flex-end', borderRadius: 7, marginTop: hp('4%') }}
                   onPress={() => {
                      // CHECK ALREADY EXIST OR NOT
-                    const results = cart.filter(cartItem => cartItem.id === item[0].id);
+                    const results = cart.filter(cartItem => cartItem.id === item.id);
 
                     if (results!="") { 
-                     
+                     console.log("eysaa",item)
 
             if (Platform.OS === 'android') {
                 ToastAndroid.show("Product Already Exist In Cart", ToastAndroid.SHORT)
@@ -206,9 +215,9 @@ const FavScreen = () => {
                     } else {
 
                       // ADD quantity to already existing JSON
-                      item[0].quantity = 1
+                      item.quantity = 1
                       //console.log(item)
-                      dispatch(AppAction.cart(item[0]))
+                      dispatch(AppAction.cart(item))
                       if (Platform.OS === 'android') {
                         ToastAndroid.show("Product Added Successful", ToastAndroid.SHORT)
                       } else {

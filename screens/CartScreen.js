@@ -37,8 +37,11 @@ const CartScreen = () => {
   ))
 )
 
+ var sortData=result1.sort((a, b) => a['id'] - b['id'])
 
 
+
+console.log("asaas",cart)
  
     
 
@@ -57,7 +60,7 @@ var price=0;
       <InternetConnection />
 
       <FlatList
-        data={result1}
+        data={sortData}
         keyExtractor={item => item.id}
         renderItem={({ item }) =>
           <View style={{ flex: 1 }}>

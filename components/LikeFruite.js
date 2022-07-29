@@ -16,7 +16,7 @@ import { white } from 'react-native-paper/lib/typescript/styles/colors';
 import { useDispatch, useSelector } from 'react-redux';
 import Toast from 'react-native-root-toast'
 
-const LikeFruite = ({fruite_id,like}) => {
+const LikeFruite = ({fruite_id,like,buttomPressEvent}) => {
 
 
    
@@ -141,7 +141,7 @@ const LikeFruite = ({fruite_id,like}) => {
         <View style={styles.likeBg}>
 
             {like ? (
-                <TouchableOpacity activeOpacity={.5} onPress={()=>LikeButtonAddFalse(userId,fruite_id )}>
+                <TouchableOpacity activeOpacity={.5} onPress={()=>buttomPressEvent(userId,fruite_id,like )}>
                     <Image
 
                         source={require('../assets/images/heart.png')}
@@ -153,7 +153,7 @@ const LikeFruite = ({fruite_id,like}) => {
                 </TouchableOpacity>
             ) : (
 
-                <TouchableOpacity activeOpacity={.5} onPress={()=>LikeButtonAddTrue(userId, fruite_id)}>
+                <TouchableOpacity activeOpacity={.5} onPress={()=>buttomPressEvent(userId, fruite_id,like)}>
                     <Image
 
                         source={require('../assets/images/half_heart.png')}

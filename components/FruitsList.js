@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect, useRef } from "react";
-import { View, Text, TouchableOpacity, AppState, StyleSheet, FlatList, ImageBackground, Dimensions } from 'react-native'
+import { View, Text, TouchableOpacity, AppState, StyleSheet, FlatList, ImageBackground, Dimensions ,Alert,ToastAndroid} from 'react-native'
 import axios from 'axios';
 import * as api from '../apis/api';
 import Ionicons from 'react-native-vector-icons/FontAwesome5'
@@ -20,13 +20,14 @@ import { Navigation } from 'react-native-navigation'
 
 
 
-const FruiteList = ({ id }) => {
+const FruiteList = ({ id,category_name }) => {
 
   const [API_DATA1, setAPI_DATA1] = useState('');
   const [API, setAPI] = useState(true);
   const [Like, setLike] = useState(false);
   const userId = useSelector(state => state.login_reducer.userId)
   const token = useSelector(state => state.login_reducer.token)
+
 
     if (API) {
      
@@ -54,13 +55,10 @@ const FruiteList = ({ id }) => {
 
            
           
-          
-            const result = Object.keys(response.data).map(key => ( response.data[key]));
-
 
             
             
-            setAPI_DATA1(result)
+            setAPI_DATA1(response.data)
            // console.log(response.data)
             setAPI(false)
 
@@ -77,7 +75,7 @@ const FruiteList = ({ id }) => {
 
     }
 
-  function  viewFruite(id,name,image,price,details) {
+  function  viewFruite(id,name,image,price,details,ratings,unit,category_id,category_name) {
     Navigation.push('MyStack', {
       component: {
           name: 'FruiteScreen',
@@ -88,11 +86,69 @@ const FruiteList = ({ id }) => {
             image:image,
             price: price,
             details: details,
+            ratings: ratings,
+            unit: unit,
+            category_id: category_id,
+            category_name: category_name,
             
           }
 
       }
   })
+  }
+
+
+function buttomPressEvent(user_id,fruite_id,like){
+ 
+
+
+  axios({
+
+      method: 'POST',
+
+      url: like? api.HOME_UNLIKE_FRUITES_URL : api.HOME_LIKE_FRUITES_URL,
+
+      data: {
+          user_id: user_id,
+          fruite_id: fruite_id
+
+
+      },
+      responseType: 'json',
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'authorization': token
+      }
+  })
+      .then(function (response) {
+
+        setAPI_DATA1(API_DATA1=>API_DATA1.map(data=>data.id===fruite_id ? {...data,like:!like} :data))
+         
+          
+              // Toast.show(response.data.message, {
+              //     duration: Toast.durations.LONG,
+              //     position: Toast.positions.BOTTOM,
+              //     shadow: true,
+              //     animation: true,
+              //     hideOnPress: true,
+              // });
+              if (Platform.OS === 'android') {
+                  ToastAndroid.show(response.data.message, ToastAndroid.SHORT)
+                } else {
+                  Alert.alert(response.data.message);
+                }
+
+
+
+      })
+      .catch(function (error) {
+
+          console.log("error5", error)
+      })
+
+
+
   }
 
 
@@ -104,26 +160,25 @@ const FruiteList = ({ id }) => {
       showsHorizontalScrollIndicator={false}
       legacyImplementation={false}
       data={API_DATA1}
-      keyExtractor={item => item[0].id}
+      keyExtractor={item => item.id}
       renderItem={({ item }) =>
         <View style={styles.fruiteView}>
-           <TouchableOpacity activeOpacity = { .5 } onPress={ ()=>{viewFruite(item[0].id,item[0].name,item[0].image,item[0].price,item[0].details)}}>
+           <TouchableOpacity activeOpacity = { .5 } onPress={ ()=>{viewFruite(item.id,item.name,item.image,item.price,item.details,item.ratings,item.unit,item.category_id,category_name)}}>
           <ImageBackground
-            source={{ uri: item[0].image }}
+            source={{ uri: item.image }}
             style={styles.fruiteImage}
             
             imageStyle={{ borderRadius: 10 }}>
 
-{item[0].like == false? 
-
-<LikeFruite fruite_id={item[0].id} like={false}/>
 
 
-: 
-<LikeFruite fruite_id={item[0].id} like={true} />
 
 
- }
+
+<LikeFruite fruite_id={item.id} like={item.like} buttomPressEvent={buttomPressEvent} />
+
+
+
 
 
        
@@ -138,17 +193,17 @@ const FruiteList = ({ id }) => {
             onFinishRating={(rating) => { console.log(rating) }}
             style={styles.rattings}
             ratingCount={5}
-            startingValue={item[0].ratings}
+            startingValue={item.ratings}
             imageSize={16}
             readonly
 
 
           />
-          <Text style={styles.fruiteTitle}> {item[0].name} </Text>
+          <Text style={styles.fruiteTitle}> {item.name} </Text>
           <Text style={styles.fruitePrice}> 
           
           
-          {item[0].price}Rs {item[0].unit}  </Text>
+          {item.price}Rs {item.unit}  </Text>
 
 
         

@@ -164,7 +164,7 @@ setAPI(false)
                 <Text style={styles.categoriesDetailsTitle}> {item.details} </Text>
               </View>
 
-            <FruiteList id={item.id}/>
+            <FruiteList id={item.id} category_name={item.name}/>
             </View>
           }
 

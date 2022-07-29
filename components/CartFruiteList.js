@@ -36,6 +36,9 @@ const CartFruiteList = ({ id, sendDataToParent }) => {
 // SEARCH FROM JSON
 	const duplicates =cart.filter(cartItem => cartItem.category_id === id);
 
+  console.log("aaaaa",duplicates)
+  var sortData=duplicates.sort((a, b) => a['id'] - b['id'])
+
 // useEffect(() => {
 //   duplicates.map(ele=>{
 
@@ -148,7 +151,7 @@ console.log("test1",updatedCart)
 
       showsVerticalScrollIndicator={false}
       legacyImplementation={false}
-      data={duplicates}
+      data={sortData}
       keyExtractor={item => item.id}
       renderItem={({ item }) =>
 

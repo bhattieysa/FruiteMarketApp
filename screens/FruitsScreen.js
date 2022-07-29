@@ -8,20 +8,46 @@ import { Image } from 'react-native-elements';
 import Header from '../components/Header';
 import InternetConnection from '../components/InternetConnection';
 import { useState, useEffect, useRef } from "react";
+import * as AppAction from '../redux/actions/login';
 import {
     widthPercentageToDP as wp, heightPercentageToDP as hp, listenOrientationChange as loc,
     removeOrientationListener as rol
 } from 'react-native-responsive-screen';
 import { Button } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
+import decode from 'jwt-decode';
 import axios from 'axios';
 const FruiteScreen = (props) => {
-
+    const dispatch = useDispatch()
     const [API, setAPI] = useState(true);
     const [Like, setLike] = useState(false);
     const userId = useSelector(state => state.login_reducer.userId)
     const token = useSelector(state => state.login_reducer.token)
     const [API_DATA, setAPI_DATA] = useState('');
+    const cart = useSelector(state => state.login_reducer.cart)
+
+    useEffect(() => {
+        if (token) {
+          const decodedToken = decode(token)
+          if (decodedToken.exp * 1000 < new Date().getTime()) {
+            dispatch(AppAction.logout()),
+              dispatch(AppAction.token(null))
+          }
+    //       if (componentMounted.current){ 
+      
+    //       fetchMyAPI()
+         
+              
+          
+        
+    //     }
+    //   }
+    //   return () => { // This code runs when component is unmounted
+    //     componentMounted.current = false; // (4) set it to false when we leave the page
+    // }
+        }
+      })
+
     if (API) {
 
 
@@ -113,9 +139,9 @@ axios({
                 <View style={styles.imageContainer}>
                     <Image
                         source={{ uri: props.image }}
-                        style={{ width: wp('93%'), height: hp('20%'), borderRadius: 10 }}
+                        style={{ width: wp('95%'), height: hp('20%'), borderRadius: 10 }}
                         // PlaceholderContent={<ActivityIndicator />}
-                        resizeMode='center'
+                    
 
                     />
 
@@ -149,7 +175,53 @@ axios({
                         // disabled={!isValid}
                         // onPress={handleSubmit}
                         style={{ alignSelf: 'baseline', paddingTop: wp('0.5%'), paddingBottom: wp('0.5%'), paddingLeft: wp('5%'), paddingRight: wp('5%'), borderRadius: 7 }}
-onPress={()=>{AddToCart(props.id)}}
+                        onPress={() => {
+                            // CHECK ALREADY EXIST OR NOT
+
+
+
+
+
+                           const results = cart.filter(cartItem => cartItem.id === props.id);
+       
+                           if (results!="") { 
+                            
+       
+                   if (Platform.OS === 'android') {
+                       ToastAndroid.show("Product Already Exist In Cart", ToastAndroid.SHORT)
+                     } else {
+                       Alert.alert('Product Already Exist In Cart');
+                     }
+                           } else {
+
+
+var cartData={
+    "category_id":props.category_id,
+    "category_name":props.category_name,
+    "details":props.details,
+    "id":props.id,
+    "image":props.image,
+    "name":props.name,
+    "price":props.price,
+    "quantity":'1',
+    "ratings":props.ratings,
+    "unit":props.unit,
+}
+
+       
+                             // ADD quantity to already existing JSON
+                           
+                             //console.log(item)
+                             dispatch(AppAction.cart(cartData))
+                             if (Platform.OS === 'android') {
+                               ToastAndroid.show("Product Added Successful", ToastAndroid.SHORT)
+                             } else {
+                               Alert.alert('Product Added Successful');
+                             }
+       
+                           }
+                         }
+                         }
                     >
                         Add To Cart
                     </Button>
@@ -174,6 +246,7 @@ const styles = StyleSheet.create({
     imageContainer: {
 
         alignItems: 'center',
+        
 
 
     },
