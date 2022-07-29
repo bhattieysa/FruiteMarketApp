@@ -113,43 +113,43 @@ const FavScreen = () => {
   //       }
 
 
-  // useEffect(()=>{
+  useEffect(()=>{
 
-   
+    axios({
+
+      method: 'POST',
+      url: api.FAV_VIEW_FRUITES_URL,
   
-  // },[])
-  axios({
-
-    method: 'POST',
-    url: api.FAV_VIEW_FRUITES_URL,
-
-    data: {
-
-      user_id: userId
-
-
-    },
-    responseType: 'json',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'authorization': token
-    }
-  })
-    .then(function (response) {
-
-// remove objects
-   //   const result = Object.keys(response.data).map(key => ( response.data[key]));
-
-      setAPI_DATA(response.data)
-
-    console.log("test",response.data)
-
+      data: {
+  
+        user_id: userId
+  
+  
+      },
+      responseType: 'json',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'authorization': token
+      }
     })
-    .catch(function (error) {
-
-      console.log("error", error)
-    })
+      .then(function (response) {
+  
+  // remove objects
+     //   const result = Object.keys(response.data).map(key => ( response.data[key]));
+  
+        setAPI_DATA(response.data)
+  
+      //console.log("test",response.data)
+  
+      })
+      .catch(function (error) {
+  
+        console.log("error", error)
+      })
+  
+  
+  },[])
 
   
   return (

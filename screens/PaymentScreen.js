@@ -1,115 +1,113 @@
 import React, { useState, useEffect} from 'react'
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TextInput, Button, Alert,StyleSheet } from "react-native";
 import { PaymentView } from '../components/PaymentView'
 import axios  from 'axios';
 import * as api from '../apis/api';
-const PaymentScreen = () => {
+import { getClientToken } from '../apis/apiCalls';
 
-    const [response, setResponse ] = useState()
-    
-    const [ makePayment, setMakePayment ] = useState(false)
-    const [paymentStatus, setPaymentStatus] = useState('')
+import stripe from 'react-native-stripe-payments';
 
-    const cartInfo = {
-        id: '5eruyt35eggr76476236523t3',
-        description: 'T Shirt - With react Native Logo',
-        amount: 1
-    }
 
-    const onCheckStatus = async (paymentResponse) => {
-        setPaymentStatus('Please wait while confirming your payment!')
-        setResponse(paymentResponse)
 
-        let jsonResponse = JSON.parse(paymentResponse);
-        // perform operation to check payment status
+stripe.setOptions({ publishingKey: 'pk_test_51L415IJiREfmU884Sg6ttsAxCe5hc1OosBTqAu2VmS3QgnYOaQFXiNgoIAtvZJeh1vNnqYDXrJyhLR8N3IxouEsu002jck3cpk' });
 
-        try {
-    
-            const stripeResponse = await axios.post(api.STRIPE_PAYMENT_URL, {
-                email: 'codergogoi@gmail.com',
-                product: cartInfo,
-                authToken: jsonResponse
-            })
+const PaymentScreen =  () => {
 
-            if(stripeResponse){
+    const [name, setName] = useState("");
 
-                const { paid } = stripeResponse.data;
-                if(paid === true){
-                    setPaymentStatus('Payment Success')
-                }else{
-                    setPaymentStatus('Payment failed due to some issue')
-                }
 
-            }else{
-                setPaymentStatus(' Payment failed due to some issue')
-            }
 
-            
-        } catch (error) {
-            
-            console.log(error)
-            setPaymentStatus(' Payment failed due to some issue')
 
+  const subscribe = async () => {
+
+      // sending request
+      const response = await fetch("http://192.168.10.4:5000/api/stripe/payment", {
+        method: "POST",
+        body: JSON.stringify({ name }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      console.log(data)
+
+      const clientSecret = data.clientSecret;
+
+
+
+      const cardDetails = {
+        number: '4242424242424247',
+        expMonth: 10,
+        expYear: 2026,
+        cvc: '888',
+      }
+      stripe.confirmPayment(clientSecret, cardDetails)
+        .then(result => {
+          // result of type PaymentResult
+          console.error(result);
+          Alert.alert("Payment complete, thank you!");
+        })
+        .catch(err =>{
+            console.error(err);
+            Alert.alert("Something went wrong, try again later!");
         }
- 
-    }
+        )
 
 
-    const paymentUI = () => {
-
-        if(!makePayment){
-
-            return <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: 300, marginTop: 50}}>
-                    <Text style={{ fontSize: 25, margin: 10}}> Make Payment </Text>
-                    <Text style={{ fontSize: 16, margin: 10}}> Product Description: {cartInfo.description} </Text>
-                    <Text style={{ fontSize: 16, margin: 10}}> Payable Amount: {cartInfo.amount} </Text>
-
-                    <TouchableOpacity style={{ height: 60, width: 300, backgroundColor: '#FF5733', borderRadius: 30, justifyContent: 'center', alignItems: 'center'
-                        }}
-                        onPress={() => {
-                            setMakePayment(true)
-                        }}
-                        >
-                        <Text style={{ color: '#FFF', fontSize: 20}}>
-                            Proceed To Pay
-                        </Text>
-
-                    </TouchableOpacity>
 
 
-                </View>
+    //   const initSheet = await stripe.initPaymentSheet({
+    //     paymentIntentClientSecret: clientSecret,
+    //   });
+    //   if (initSheet.error) return Alert.alert(initSheet.error.message);
+    //   const presentSheet = await stripe.presentPaymentSheet({
+    //     clientSecret,
+    //   });
+    //   if (presentSheet.error) return Alert.alert(presentSheet.error.message);
 
 
-             
-            // show to make payment
-        }else{
-
-            if(response !== undefined){
-                return <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: 300, marginTop: 50}}>
-                    <Text style={{ fontSize: 25, margin: 10}}> { paymentStatus} </Text>
-                    <Text style={{ fontSize: 16, margin: 10}}> { response} </Text>
-                </View>
-
-            }else{
-                return <PaymentView onCheckStatus={onCheckStatus} product={cartInfo.description} amount={cartInfo.amount} />
-
-            }
-            
-        }
-
-    }
 
 
-return (<View style={styles.container}>
-            {paymentUI()}
-        </View>)}
+
+
+  };
+
+
+
+
+
+
+
+
+
+return (
+
+    <View>
+      <TextInput
+        value={name}
+        onChangeText={(text) => setName(text)}
+        placeholder="Name"
+        style={{
+          width: 300,
+          fontSize: 20,
+          padding: 10,
+          borderWidth: 1,
+        }}
+      />
+      <Button title="Subscribe - 25 INR" onPress={subscribe} />
+    </View>
+
+)}
 
 
 const styles = StyleSheet.create({
-container: { flex: 1, paddingTop: 100},
-navigation: { flex: 2, backgroundColor: 'red' },
-body: { flex: 10, justifyContent: 'center', alignItems: 'center', backgroundColor: 'yellow' },
-footer: { flex: 1, backgroundColor: 'cyan' }
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+    
 })
 
  export default PaymentScreen 

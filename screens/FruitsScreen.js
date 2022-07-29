@@ -180,7 +180,7 @@ axios({
 
 
 
-
+if(cart!=undefined){
 
                            const results = cart.filter(cartItem => cartItem.id === props.id);
        
@@ -220,6 +220,32 @@ var cartData={
                              }
        
                            }
+                        }else{
+
+var cartData={
+    "category_id":props.category_id,
+    "category_name":props.category_name,
+    "details":props.details,
+    "id":props.id,
+    "image":props.image,
+    "name":props.name,
+    "price":props.price,
+    "quantity":'1',
+    "ratings":props.ratings,
+    "unit":props.unit,
+}
+
+       
+                             // ADD quantity to already existing JSON
+                           
+                             //console.log(item)
+                             dispatch(AppAction.cart(cartData))
+                             if (Platform.OS === 'android') {
+                               ToastAndroid.show("Product Added Successful", ToastAndroid.SHORT)
+                             } else {
+                               Alert.alert('Product Added Successful');
+                             }
+                        }
                          }
                          }
                     >

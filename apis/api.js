@@ -1,4 +1,4 @@
-export const BASE_URL = "http://192.168.10.13:5000/"
+export const BASE_URL = "http://192.168.10.6:5000/"
 
 
 
@@ -39,3 +39,9 @@ export const CART_QUANTITY_URL = BASE_URL+'api/cart/quantity';
 
 //Stripe
 export const STRIPE_PAYMENT_URL = BASE_URL+'api/stripe/payment';
+
+
+//braintree
+export const BrainTreePayment = BASE_URL+'api/braintree/payment';
+export const BrainTreeGenerateToken = BASE_URL+'api/braintree/generate/token';
+export const BrainTreeProcessPayment = BASE_URL+'api/braintree/process/payment';

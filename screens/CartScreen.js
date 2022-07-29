@@ -41,7 +41,7 @@ const CartScreen = () => {
 
 
 
-console.log("asaas",cart)
+
  
     
 
@@ -105,14 +105,10 @@ price=parseInt(price)+parseInt(total)
           Navigation.push('MyStack', {
             component: {
               name: 'PaymentScreen',
-              // passProps:{
-              //   name:name,
-              //   cnic:cnic,
-              //   number:mobile_number,
-              //   pass:pass,
-              //   id:user_id
+              passProps:{
+              cart:cart
 
-              // }
+              }
 
             }
           })

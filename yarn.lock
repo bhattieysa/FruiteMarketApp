@@ -10116,6 +10116,11 @@ react-native-status-bar-height@^2.5.0:
   resolved "https://registry.yarnpkg.com/react-native-status-bar-height/-/react-native-status-bar-height-2.6.0.tgz#b6afd25b6e3d533c43d0fcdcfd5cafd775592cea"
   integrity sha512-z3SGLF0mHT+OlJDq7B7h/jXPjWcdBT3V14Le5L2PjntjjWM3+EJzq2BcXDwV+v67KFNJic5pgA26cCmseYek6w==
 
+react-native-stripe-payments@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/react-native-stripe-payments/-/react-native-stripe-payments-1.0.8.tgz#bed9a96e2571bee89dfd078ba606d5c78405a0d8"
+  integrity sha512-z60j7OORwUHLv7Pz6jOYYkkjJj4qUmqH0JqACfL8e/SFbLR3gDSYjCLGIX/u3CxgbGE+wdWiiNWbaL3DNS+epg==
+
 react-native-styled-toast@^1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/react-native-styled-toast/-/react-native-styled-toast-1.3.1.tgz#7486aa30aef4a73fe2629bb9b5f1dd96e6b35f2c"

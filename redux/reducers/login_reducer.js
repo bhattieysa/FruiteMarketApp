@@ -34,7 +34,7 @@ const login_reducer= (state = initialState, action)=>{
                 case ADDTOCART:
                     return { 
                         ...state,
-                        cart: [...state.cart,  action.data]
+                        cart: action.data
         
                     }
                     case DELETEFROMCART:
